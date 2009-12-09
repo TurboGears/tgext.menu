@@ -1,2 +1,4 @@
 syntax:glob
 tgext.menu.egg-info/*
+*.pyc
+*.wpu
