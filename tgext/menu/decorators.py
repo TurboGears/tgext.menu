@@ -1,9 +1,19 @@
-from caches import shared_menu_cache, entry
+import sys
+from pylons import config
+from caches import shared_cache, entry
 
 class menu(object):
     def __init__(self, path, name, extension='html', permission=None, url=None):
-        item = entry(path, name, extension, permission, url)
-        shared_menu_cache.addEntry(item)
+        self.item = entry(path, name, extension, permission, url)
+        
+    def __call__(self, func):
+        self.item.func = func
+        shared_cache.addEntry(self.item)
+        #print dir(func)
+        #for i in dir(func):
+        #    print '%s: %s' % (i, getattr(func, i))
+        #c = config['package'].controllers.root.RootController
+        return func
 
 class navbar(menu):
     def __init__(self, path, extension='html', permission=None, url=None):

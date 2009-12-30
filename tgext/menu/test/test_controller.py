@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 from tgext.menu.test.model import metadata, DBSession
+from tgext.menu.caches import shared_cache
 
 root = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, root)
@@ -62,5 +63,6 @@ class TestMenuDecorator:
         self.app = app_from_config(base_config)
 
     def test_index(self):
+        shared_cache.updateUrls()
         resp = self.app.get('/')
         assert 'mainmenu' in resp, resp
