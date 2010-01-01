@@ -1,5 +1,4 @@
 import sys
-from pylons import config
 from caches import shared_cache, entry
 
 class menu(object):
@@ -9,10 +8,6 @@ class menu(object):
     def __call__(self, func):
         self.item.func = func
         shared_cache.addEntry(self.item)
-        #print dir(func)
-        #for i in dir(func):
-        #    print '%s: %s' % (i, getattr(func, i))
-        #c = config['package'].controllers.root.RootController
         return func
 
 class navbar(menu):

@@ -21,8 +21,11 @@ class shared_menu_cache(object):
         self.__dict__ = self.__shared_state
         if not(hasattr(self, '_menuitems')):
             self._menuitems = {}
+        if not(hasattr(self, 'needs_update')):
+            self.needs_update = True
 
     def addEntry(self, menuitem):
+        self.needs_update = True
         if menuitem._name not in self._menuitems:
             self._menuitems[menuitem._name] = {}
         self._menuitems[menuitem._name][menuitem._path] = menuitem
@@ -48,6 +51,8 @@ class shared_menu_cache(object):
             del self._menuitems[menuname]
             
     def getMenu(self, menuname):
+        if self.needs_update:
+            self.updateUrls()
         return self._menuitems[menuname] if menuname in self._menuitems else dict()
     
     def updateUrls(self):
@@ -58,8 +63,6 @@ class shared_menu_cache(object):
             for menuitem in self._menuitems[menuname]:
                 mi = self._menuitems[menuname][menuitem]
                 mi._url = find_url(r, self._menuitems[menuname][menuitem])
-                print self._menuitems[menuname][menuitem]
-        1/0
 
 
 def find_url(root, menuitem):
@@ -68,8 +71,9 @@ def find_url(root, menuitem):
         if root.__dict__[n] is menuitem.func:
             return '/%s' % (n)
     for i in root.__dict__:
-        if isinstance(root.__dict__[i], TGController):
-            v = find_url(root.__dict__[i].__class__, menuitem)
+        controller = root.__dict__[i]
+        if hasattr(controller, '_dispatch'):
+            v = find_url(controller.__class__, menuitem)
             if v is not None:
                 return '/%s%s' % (i, v)
     return None

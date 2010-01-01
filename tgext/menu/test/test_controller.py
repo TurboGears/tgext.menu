@@ -1,7 +1,6 @@
 import os, sys
 import tgext.menu
 from tg.test_stack import TestConfig, app_from_config
-from tgext.menu.test.model import Dictionary
 from tg.util import Bunch
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -9,6 +8,8 @@ from sqlalchemy.orm import sessionmaker
 
 from tgext.menu.test.model import metadata, DBSession
 from tgext.menu.caches import shared_cache
+from tgext.menu.test.model import Dictionary
+from tgext.menu import menu_variable_provider
 
 root = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, root)
@@ -33,7 +34,8 @@ base_config = TestConfig(folder = 'rendering',
                                    'use_dotted_templatenames': True,
                                    'paths':paths,
                                    'package':tgext.menu.test,
-                                   'sqlalchemy.url':test_db_path
+                                   'sqlalchemy.url':test_db_path,
+                                   'variable_provider':menu_variable_provider
                                   }
                          )
 
@@ -63,6 +65,5 @@ class TestMenuDecorator:
         self.app = app_from_config(base_config)
 
     def test_index(self):
-        shared_cache.updateUrls()
         resp = self.app.get('/')
-        assert 'mainmenu' in resp, resp
+        assert 'navbar' in resp, resp
