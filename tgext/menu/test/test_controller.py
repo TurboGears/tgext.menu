@@ -60,10 +60,43 @@ def setup():
     setup_records(session)
     session.commit()
 
+rendered_menu = """
+<div id="navbar_div">
+    <ul id="navbar">
+        <li><a href="/sub1/Sub2/bybye">ExitApp</a></li>
+        <li><a href="/sub1/spot">Foo Spot</a>
+            <ul class="navbar_level1">
+                <li><a href="/bar">Bar</a></li>
+                <li><a href="/baz">Baz</a></li>
+                <li><a href="/foo">Foo</a></li>
+                <li>Sub
+                    <ul class="navbar_level2">
+                        <li><a href="/sub1/bar">Bar</a></li>
+                        <li><a href="/sub1/baz">Baz</a></li>
+                        <li><a href="/sub1/foo">Foo</a></li>
+                    </ul>
+                    </li>
+            </ul>
+            </li>
+        <li>Sub
+            <ul class="navbar_level1">
+                <li><a href="/sub1/index">Sub 1</a>
+                    <ul class="navbar_level2">
+                        <li><a href="/sub1/nested/index">Nested 1</a></li>
+                    </ul>
+                    </li>
+            </ul>
+            </li>
+        <li><a href="/index">TestHome</a></li>
+    </ul>
+</div>
+"""
 class TestMenuDecorator:
     def __init__(self, *args, **kargs):
         self.app = app_from_config(base_config)
 
     def test_index(self):
         resp = self.app.get('/')
-        assert 'navbar' in resp, resp
+        assert rendered_menu in resp, resp
+        print resp
+        1/0

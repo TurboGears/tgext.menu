@@ -10,9 +10,11 @@
     <meta py:replace="select('*')"/>
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/style.css')}" />
 </head>
-
+<?python
+  from genshi import HTML
+?>
 <body py:match="body" py:attrs="select('@*')">
-  ${render_navbar()}
+${HTML(render_navbar())}
   <ul id="mainmenu">
     <li class="first"><a href="${tg.url('/')}" class="${('', 'active')[defined('page') and page==page=='index']}">Welcome</a></li>
         <li><a href="${tg.url('/about')}" class="${('', 'active')[defined('page') and page==page=='about']}">About</a></li>

@@ -40,6 +40,11 @@ class SubController(TGController):
     @expose('genshi:tgext.menu.test.templates.index')
     def baz(self, *p, **kw):
         return dict()
+    
+    @navbar('Foo Spot')
+    @expose('genshi:tgext.menu.test.templates.index')
+    def spot(self, *p, **kw):
+        return dict()    
 
 
 class RootController(TGController):

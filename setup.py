@@ -14,9 +14,10 @@ setup(
     author_email='',
     #url='',
     install_requires=[
-        "TurboGears2 >= 2.0b7",
+        "TurboGears2 >= 2.1a3",
         "zope.sqlalchemy >= 0.4 ",
         "repoze.tm2 >= 1.0a4",
+        'Mako >= 0.2.4'
         ],
     setup_requires=["PasteScript >= 1.7"],
     paster_plugins=['PasteScript', 'Pylons', 'TurboGears2', 'tg.devtools'],

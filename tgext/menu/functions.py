@@ -1,3 +1,8 @@
+from mako.template import Template
+
+from pkg_resources import Requirement, resource_string
+divmenu = Template(resource_string(Requirement.parse("tgext.menu"),"tgext/menu/templates/divmenu.mak"))
+
 from caches import shared_cache
 
 def url_from_menu():
@@ -9,7 +14,7 @@ def render_menu(menuname):
     menu = shared_cache.getMenu(menuname)
     for key in sorted(menu.keys()):
         ul.append((key, str(menu[key]._url)))
-    return ul
+    return divmenu.render(menulist=ul)
 
 def render_navbar():
     return render_menu(u'navbar')
@@ -18,5 +23,5 @@ def render_sidebar():
     return render_menu(u'sidebar')
 
 def render_sitemap():
-    # TODO: Generate the XML for a sitemap
+    raise NotImplementedError('render_sitemap: Not Yet Implemented')
     return render_menu(u'sitemap')
