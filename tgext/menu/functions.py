@@ -14,7 +14,7 @@ def render_menu(menuname):
     menu = shared_cache.getMenu(menuname)
     for key in sorted(menu.keys()):
         ul.append((key, str(menu[key]._url)))
-    return divmenu.render(menulist=ul)
+    return divmenu.render(menulist=ul, name=menuname)
 
 def render_navbar():
     return render_menu(u'navbar')
