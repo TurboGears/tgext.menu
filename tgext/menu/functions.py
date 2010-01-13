@@ -41,9 +41,7 @@ def render_menu(menuname):
     for key in sorted(menu.keys()):
         mpath = [x.strip() for x in key.split('||')]
         menutree.appendPath(mpath, str(menu[key]._url))
-    a=divmenu.render(menulist=menutree, name=menuname)
-    print a
-    return a
+    return divmenu.render(menulist=menutree, name=menuname)
 
 def render_navbar():
     return render_menu(u'navbar')
