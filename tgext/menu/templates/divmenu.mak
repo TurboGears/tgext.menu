@@ -1,13 +1,14 @@
 <%
     from cgi import escape
+    from tg import url
 %>
 <div id="${name}_div">
-    <ul id="${name}">
+    <ul id="${name}" class="jd_menu">
 <%
     def writeList(level, mlist):
         tabs = '    '*(level+2)
         if mlist.href:
-            href = '<a href="%s">%s</a>' % (mlist.href, escape(mlist.name, True))
+            href = '<a href="%s">%s</a>' % (url(mlist.href), escape(mlist.name, True))
         else:
             href = escape(mlist.name, True)
         if len(mlist.children) == 0:
@@ -25,3 +26,8 @@
 %>
     </ul>
 </div>
+<script type="text/javascript">
+$(function(){
+$('ul.jd_menu').jdMenu();
+});
+</script>

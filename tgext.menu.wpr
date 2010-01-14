@@ -12,5 +12,5 @@ proj.directory-list = [{'dirloc': loc('.'),
                         'watch_for_changes': True}]
 proj.file-type = 'shared'
 proj.main-file = loc('tgext/__init__.py')
-testing.auto-test-file-specs = ('test*',)
+testing.auto-test-file-specs = ('tgext/menu/test/test*',)
 testing.test-framework = {None: 'nose'}

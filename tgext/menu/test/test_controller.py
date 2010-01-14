@@ -62,7 +62,7 @@ def setup():
 
 rendered_menu = """
 <div id="navbar_div">
-    <ul id="navbar">
+    <ul id="navbar" class="jd_menu">
         <li><a href="/sub1/Sub2/bybye">ExitApp</a></li>
         <li><a href="/sub1/spot">Foo Spot</a>
           <ul class="navbar_level1">
