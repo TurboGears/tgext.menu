@@ -29,22 +29,19 @@ class OutputEntry(object):
     def appendPath(self, name, href):
         # name is a list of paths, i.e.: ['Foo Spot', 'Bar']
         if len(name) > 1:
-            midx = len(self.children)
-            idx = 0
-            found = False
-            while not found and idx < midx:
-                found = self.children[idx].name == name[0]
-                idx += 1
-            if not found:
+            try:
+                idx = self.children.index(name[0])
+            except ValueError:
                 child = OutputEntry(name[0])
                 self.children.append(child)
                 idx = len(self.children)-1
-            else:
-                idx -= 1
             self.children[idx].appendPath(name[1:], href)
         else:
             child = OutputEntry(name[0], href)
             self.children.append(child)
+    
+    def __eq__(self, othername):
+        return self.name == othername
             
 def url_from_menu():
     # @todo: make a function that will return the url for the given menu path
