@@ -4,6 +4,8 @@ from pylons import config
 from decorators import menu, navbar, sidebar, sitemap
 from functions import render_menu, render_navbar, render_sidebar, render_sitemap, url_from_menu
 
+__all__ = ["menu", "navbar", "sidebar", "sitemap", "url_from_menu"]
+
 def menu_variable_provider():
     menu_vars = Bunch (
         url_from_menu = url_from_menu,

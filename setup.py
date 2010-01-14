@@ -32,5 +32,5 @@ setup(
             ('templates/**.html', 'genshi', None),
             ('public/**', 'ignore', None)]},
     package_data={'tgext.menu' : ['static/*', 'templates/*'] },
-    dependency_links=['http://www.turbogears.org/2.1/downloads/']
+    dependency_links=['http://www.turbogears.org/2.1/downloads/2.1a2']
 )
