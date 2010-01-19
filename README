@@ -1,0 +1,130 @@
+== Welcome to the TurboGears Menu Extension ==
+
+tgext.menu provides a way for controllers to be more easily reused,
+while providing developers a way to stop worrying about the menus in
+their application. In a nutshell, that is what you get.
+
+One thing that all web applications have in common is the need for
+menus to help users navigate the application. The menus can be small,
+single level, easily displayed across the top of the page. Or they can
+be large, complex, hierarchical, and highly variable depending on
+permissions and a whole host of other factors. tgext.menu helps out in
+any of these cases.
+
+
+When you use tgext.menu, you need to do the following three steps:
+
+1. Add it to your project. This is accomplished by modifying your setup.py. Add "tgext.menu" to your **install_requires** list. 
+
+2. Add it to your master template. This step varies depending on whether you are using Mako or Genshi for your templating engine. In either case, where you have the code to render your navigation bar, put this code:
+
+**Mako**
+
+{{{
+#!html+mako
+${render_navbar()|n}
+}}}
+
+**Genshi**
+
+Place this near the top of your template:
+{{{
+#!genshi
+<?python
+from genshi import HTML
+?>
+}}}
+
+And place this where your navigation bar would go.
+{{{
+#!genshi
+${HTML(render_navbar(True))}
+}}}
+
+3. Add tgext.menu into your controllers. Place this code in any controllers that will be using tgext.menu:
+
+{{{
+#!python
+from tgext.menu import navbar, sidebar, menu
+}}}
+
+In front of any @expose'd methods, place a call to add them to your navigation bar, like so:
+
+{{{
+#!python
+@navbar('TestHome')
+@expose('genshi:tgext.menu.test.templates.index')
+def index(self, *p, **kw):
+    return dict()
+}}}
+
+To nest menus, use || as separators, like so:
+
+{{{
+#!python
+@navbar('My || Sub || Menu')
+@expose('genshi:tgext.menu.test.templates.index')
+def index(self, *p, **kw):
+    return dict()
+}}}
+
+
+And that's it, your menus will now render automatically. When you
+addmore items to your navbar using @navbar, they will appear without
+your having to update any templates at all.
+
+== Full Documentation ==
+
+tgext.menu is built around the idea that a given web application can
+have any number of menus. In this extension, each of them are
+named. Two are so common that they are given shortcuts in the API:
+navbar and sidebar. If you have other menus you wish to add to, you
+will need to name them specifically. Fortunately, this is not as hard
+as it sounds.
+
+
+In your controller code, you will be using one of three methods:
+
+* @navbar('menu path')
+* @sidebar('menu path')
+* @menu('menu path', 'menu name')
+
+menu path is simply a string of entries, separated by ||, indicating
+where this particular entry lives in the menu hierarchy. An example
+would be "Help || About" or "Edit || Copy", or "My || Deeply || Nested
+|| Submenu". Spaces around || will be stripped off, and are only put
+in those strings for readability.
+
+If you use the @menu decorator, you will need to specify which menu
+this particular menu entry belongs to. This will allow you to provide
+a specific menu for a specific section of your application. An example
+would be if you are writing up an admin module, and want to provide an
+admin-only menu.
+
+Using @menu will be rare. Normally, you will only be using @navbar or
+@sidebar.
+
+In your template, you will need to render the menu. This follows a
+similar pattern from above. You will have the following methods
+available to you in your template:
+
+* render_navbar(inject_css=False)
+* render_sidebar(inject_css=False)
+* render_menu(menu_name, inject_css=False)
+
+The "inject_css" parameter is used to inject the default CSS that
+comes from the [[http://jdsharp.us/jQuery/plugins/jdMenu/|jdMenu
+plugin]]. It is set to False,by default, so as to allow you to specify
+your own CSS.
+
+== Drawbacks ==
+
+As of right now, the menus are alphabetically sorted. This will be
+fixed in the next release, allowing you to specify the ordering of the
+menu entries.
+
+Permissions are not yet honored: Any entries will always show up for
+all users. This, too, will be fixed in the next release.
+
+Dynamic menu entries are possible right now, but not easy. A future
+release will provide support for menu_append and menu_remove methods.
