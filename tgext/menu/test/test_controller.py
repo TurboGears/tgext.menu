@@ -35,7 +35,17 @@ base_config = TestConfig(folder = 'rendering',
                                    'paths':paths,
                                    'package':tgext.menu.test,
                                    'sqlalchemy.url':test_db_path,
-                                   'variable_provider':menu_variable_provider
+                                   'variable_provider':menu_variable_provider,
+                                   'tgext': {
+                                       'menu': {
+                                           'sortorder': {
+                                               'TestHome': -1,
+                                               'ExitApp': 99999999,
+                                               'Baz' : 50,
+                                               'Sub' : 50
+                                               }
+                                           }
+                                       }
                                   }
                          )
 
@@ -63,21 +73,7 @@ def setup():
 rendered_menu = """
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
-        <li><a href="/sub1/Sub2/bybye">ExitApp</a></li>
-        <li><a href="/sub1/spot">Foo Spot</a>
-          <ul class="navbar_level1">
-            <li><a href="/bar">Bar</a></li>
-            <li><a href="/baz">Baz</a></li>
-            <li><a href="/foo">Foo</a></li>
-            <li>Sub
-              <ul class="navbar_level2">
-                <li><a href="/sub1/bar">Bar</a></li>
-                <li><a href="/sub1/baz">Baz</a></li>
-                <li><a href="/sub1/foo">Foo</a></li>
-              </ul>
-              </li>
-          </ul>
-          </li>
+        <li><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
             <li><a href="/sub1/index">Sub 1</a>
@@ -87,7 +83,21 @@ rendered_menu = """
               </li>
           </ul>
           </li>
-        <li><a href="/index">TestHome</a></li>
+        <li><a href="/sub1/spot">Foo Spot</a>
+          <ul class="navbar_level1">
+            <li><a href="/baz">Baz</a></li>
+            <li>Sub
+              <ul class="navbar_level2">
+                <li><a href="/sub1/baz">Baz</a></li>
+                <li><a href="/sub1/bar">Bar</a></li>
+                <li><a href="/sub1/foo">Foo</a></li>
+              </ul>
+              </li>
+            <li><a href="/bar">Bar</a></li>
+            <li><a href="/foo">Foo</a></li>
+          </ul>
+          </li>
+        <li><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
 </div>
 """
