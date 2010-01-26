@@ -108,14 +108,54 @@ In your template, you will need to render the menu. This follows a
 similar pattern from above. You will have the following methods
 available to you in your template:
 
-* render_navbar(inject_css=False)
-* render_sidebar(inject_css=False)
-* render_menu(menu_name, inject_css=False)
+* render_navbar(vertical=False)
+* render_sidebar(vertical=False)
+* render_menu(menu_name, vertical=False)
+
+The "vertical" parameter is used to tell jdMenu that this should be a vertical
+menu.
+
+In your app_cfg, you may have a section named "base_config.tgext_menu". The
+way to add this section is to produce code like this:
+
+    base_config.tgext_menu = {}
+    base_config.tgext_menu['inject_css'] = True
+
+This has two possible parameters in it: inject_css and sortorder.
 
 The "inject_css" parameter is used to inject the default CSS that
 comes from the [[http://jdsharp.us/jQuery/plugins/jdMenu/|jdMenu
 plugin]]. It is set to False,by default, so as to allow you to specify
 your own CSS.
+
+"sortorder" is a bit more complex to explain. Basically, using this, you can
+set up the sort ordering for your menus. This is done by assigning entries a
+numeric value, with higher values going towards the right/bottom, and lower
+values towards the left/top. An entry is a single path segment. This is
+accomplished by assigning a dictionary to the sortorder configuration
+paramter. Unassigned entries will be given a value of 999999. All of this is
+best to explain by example.
+
+Assume we have the following menu entries:
+ExitApp
+Foo Spot || Bar
+Foo Spot || Baz
+Foo Spot || Foo
+
+Now assume we have set the following dictionary as our sort order:
+{ 'ExitApp': 20, 'Foo': 10 }
+
+This will result in the menus being order like so:
+ExitApp
+Foo Spot || Foo
+Foo Spot || Bar
+Foo Spot || Baz
+
+'ExitApp' will be compared with 'Foo Spot'. 'Foo Spot' has the value 999999,
+and ExitApp has 20. ExitApp goes first.
+
+In the sub menu for 'Foo Spot', 'Foo' has the value 10, while the others have
+the value 999999. 'Foo' goes first.
 
 == Drawbacks ==
 

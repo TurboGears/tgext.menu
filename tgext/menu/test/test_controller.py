@@ -49,15 +49,14 @@ base_config = TestConfig(folder = 'rendering',
                                    
                                    'beaker.session.secret': 'ChAnGeMe',
                                    'beaker.session.key': 'tgext.menu.test',
-                                   'tgext': {
-                                       'menu': {
-                                           'sortorder': {
-                                               'TestHome': -1,
-                                               'ExitApp': 99999999,
-                                               'Baz' : 50,
-                                               'Sub' : 50
-                                               }
-                                           }
+                                   'tgext_menu': {
+                                        'inject_css': True,
+                                        'sortorder': {
+                                            'TestHome': -1,
+                                            'ExitApp': 99999999,
+                                            'Baz' : 50,
+                                            'Sub' : 50
+                                            }
                                        }
                                   }
                          )
@@ -185,6 +184,17 @@ class TestMenuDecorator:
     def test_index(self):
         resp = self.app.get('/')
         assert rendered_menu in resp, resp
+        
+    def test_inject_css_true(self):
+        resp = self.app.get('/')
+        assert 'jquery.jdMenu.css' in resp, resp
+
+    def test_inject_css_false(self):
+        oldval = base_config['tgext_menu']['inject_css']
+        base_config['tgext_menu']['inject_css'] = False
+        resp = self.app.get('/')
+        assert 'jquery.jdMenu.css' not in resp, resp
+        base_config['tgext_menu']['inject_css'] = oldval
 
     def test_index_loggedin(self):
         resp = self.app.get('/login')

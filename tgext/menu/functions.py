@@ -82,7 +82,7 @@ def permission_met(permission):
         except:
             return False
     
-def render_menu(menuname, inject_css=False):
+def render_menu(menuname, vertical=False):
     global sortorder
     jquery_js.inject()
     jquery_bgiframe_js.inject()
@@ -90,23 +90,23 @@ def render_menu(menuname, inject_css=False):
     jquery_position_js.inject()
     jquery_jdmenu_js.inject()
     
-    if inject_css:
+    if config.get('tgext_menu', {}).get('inject_css', False):
         jquery_jdmenu_css.inject()
     
     menutree = OutputEntry(menuname)
     menu = shared_cache.getMenu(menuname)
-    sortorder = config.get('tgext', {}).get('menu', {}).get('sortorder', {})
+    sortorder = config.get('tgext_menu', {}).get('sortorder', {})
     shortmenu = [menu[key] for key in filter(lambda x: permission_met(menu[x]._permission), menu.keys())]
     for menuitem in sorted(shortmenu, sort_entry):
         menutree.appendPath(menuitem._mpath, str(menuitem._url))
-    return divmenu.render(menulist=menutree, name=menuname)
+    return divmenu.render(menulist=menutree, name=menuname, vertical_menu=vertical)
 
-def render_navbar(inject_css=False):
-    return render_menu(u'navbar', inject_css)
+def render_navbar(vertical=False):
+    return render_menu(u'navbar', vertical)
 
-def render_sidebar(inject_css=False):
-    return render_menu(u'sidebar', inject_css)
+def render_sidebar(vertical=False):
+    return render_menu(u'sidebar', vertical)
 
-def render_sitemap(inject_css=False):
+def render_sitemap(vertical=False):
     raise NotImplementedError('render_sitemap: Not Yet Implemented')
-    return render_menu(u'sitemap', inject_css)
+    return render_menu(u'sitemap', vertical)

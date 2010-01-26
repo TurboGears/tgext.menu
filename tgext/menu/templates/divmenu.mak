@@ -3,7 +3,7 @@
     from tg import url
 %>
 <div id="${name}_div">
-    <ul id="${name}" class="jd_menu">
+    <ul id="${name}" class="jd_menu${'_vertical' if vertical_menu else ''}">
 <%
     def writeList(level, mlist):
         tabs = '    '*(level+2)
@@ -28,6 +28,6 @@
 </div>
 <script type="text/javascript">
 $(function(){
-$('ul.jd_menu').jdMenu();
+$("#${name}").jdMenu();
 });
 </script>
