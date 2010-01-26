@@ -6,6 +6,7 @@ from tg.controllers import TGController
 class entry(object):
     def __init__(self, path, name, extension, permission, url):
         self._path = path
+        self._mpath = [x.strip() for x in path.split('||')]
         self._name = name
         self._extension = extension
         self._permission = permission

@@ -46,6 +46,11 @@ class SubController(TGController):
     def spot(self, *p, **kw):
         return dict()    
 
+    @navbar('Admin App', permission='manage')
+    @expose('genshi:tgext.menu.test.templates.index')
+    def admin(self, *p, **kw):
+        return dict()    
+    
 
 class RootController(TGController):
     sub1 = SubController()

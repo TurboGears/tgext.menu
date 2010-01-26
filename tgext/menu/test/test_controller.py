@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-from tgext.menu.test.model import metadata, DBSession
+from tgext.menu.test.model import metadata, DBSession, User, Group, Permission
 from tgext.menu.caches import shared_cache
 from tgext.menu.test.model import Dictionary
 from tgext.menu import menu_variable_provider
@@ -23,19 +23,33 @@ paths=Bunch(
 
 base_config = TestConfig(folder = 'rendering',
                          values = {'use_sqlalchemy': True,
+                                   'full_stack': True,
                                    'model':tgext.menu.test.model,
                                    'session':tgext.menu.test.model.DBSession,
                                    'pylons.helpers': Bunch(),
                                    'use_legacy_renderer': False,
                                    'renderers':['json', 'genshi', 'mako'],
                                    'default_renderer':'genshi',
-                                   # this is specific to mako
-                                   # to make sure inheritance works
                                    'use_dotted_templatenames': True,
                                    'paths':paths,
                                    'package':tgext.menu.test,
                                    'sqlalchemy.url':test_db_path,
                                    'variable_provider':menu_variable_provider,
+                                   #'auth_backend': 'sqlalchemy',
+                                   #'sa_auth': {
+                                       #'cookie_secret': 'ChAnGeMe',
+                                       #'dbsession': tgext.menu.test.model.DBSession,
+                                       #'user_class': User,
+                                       #'group_class': Group,
+                                       #'permission_class': Permission,
+                                       #'post_login_url': '/post_login',
+                                       #'post_logout_url': '/post_logout',
+                                       #'form_plugin': None,
+                                       #},
+                                   
+                                   'beaker.session.secret': 'ChAnGeMe',
+                                   'beaker.session.key': 'tgext.menu.test',
+                                   'cache_dir': '%(here)s/data',
                                    'tgext': {
                                        'menu': {
                                            'sortorder': {
@@ -59,6 +73,30 @@ def setup_records(session):
     session.add(Dictionary(word=u'the'))
     session.add(Dictionary(word=u'lazy'))
     session.add(Dictionary(word=u'dog'))
+
+    u = User()
+    u.user_name = u'manager'
+    u.display_name = u'Example manager'
+    u.email_address = u'manager@somedomain.com'
+    u.password = u'managepass'
+
+    session.add(u)
+
+    g = Group()
+    g.group_name = u'managers'
+    g.display_name = u'Managers Group'
+
+    g.users.append(u)
+
+    session.add(g)
+
+    p = Permission()
+    p.permission_name = u'manage'
+    p.description = u'This permission give an administrative right to the bearer'
+    p.groups.append(g)
+
+    session.add(p)
+
     session.flush()
 
 def setup():
@@ -108,3 +146,12 @@ class TestMenuDecorator:
     def test_index(self):
         resp = self.app.get('/')
         assert rendered_menu in resp, resp
+
+    def test_index_loggedin(self):
+        assert 1==1
+        resp = self.app.get('/login')
+        form = resp.form
+        form['login'] = u'manager'
+        form['password'] = u'password'
+        post_login = form.submit(status=302)
+        assert post_login.location.startswith('http://localhost/post_login')

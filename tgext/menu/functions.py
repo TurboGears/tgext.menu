@@ -1,9 +1,14 @@
+from operator import attrgetter
+
 from mako.template import Template
 
 from pkg_resources import Requirement, resource_string
 divmenu = Template(resource_string(Requirement.parse("tgext.menu"),"tgext/menu/templates/divmenu.mak"))
 
 from pylons import config
+from repoze.what.predicates import NotAuthorizedError
+from repoze.what.predicates import has_permission
+from tg import request
 from tw.api import JSLink, CSSLink
 from tw.jquery import jquery_js, jquery_bgiframe_js, jquery_dimensions_js
 
@@ -52,17 +57,31 @@ def url_from_menu():
 
 def sort_entry(ent1, ent2):
     global sortorder
-    list1 = [x.strip() for x in ent1.split('||')]
-    list2 = [x.strip() for x in ent2.split('||')]
     idx = 0
-    while idx < len(list1) and idx < len(list2):
-        val1 = sortorder.get(list1[idx], 999999)
-        val2 = sortorder.get(list2[idx], 999999)
+    while idx < len(ent1._mpath) and idx < len(ent2._mpath):
+        val1 = sortorder.get(ent1._mpath[idx], 999999)
+        val2 = sortorder.get(ent2._mpath[idx], 999999)
         if val1 != val2:
             return cmp(val1, val2)
         idx += 1
-    return cmp(ent1, ent2)
+    return cmp(ent1._mpath, ent2._mpath)
 
+def permission_met(permission):
+    if permission is None:
+        return True
+    elif type(permission) is str:
+        try:
+            has_permission(permission).check_authorization(request.environ)
+            return True
+        except NotAuthorizedError:
+            return False
+    else:
+        try:
+            permission.check_authorization(request.environ)
+            return True
+        except:
+            return False
+    
 def render_menu(menuname, inject_css=False):
     global sortorder
     jquery_js.inject()
@@ -77,9 +96,9 @@ def render_menu(menuname, inject_css=False):
     menutree = OutputEntry(menuname)
     menu = shared_cache.getMenu(menuname)
     sortorder = config.get('tgext', {}).get('menu', {}).get('sortorder', {})
-    for key in sorted(menu.keys(), sort_entry):
-        mpath = [x.strip() for x in key.split('||')]
-        menutree.appendPath(mpath, str(menu[key]._url))
+    shortmenu = [menu[key] for key in filter(lambda x: permission_met(menu[x]._permission), menu.keys())]
+    for menuitem in sorted(shortmenu, sort_entry):
+        menutree.appendPath(menuitem._mpath, str(menuitem._url))
     return divmenu.render(menulist=menutree, name=menuname)
 
 def render_navbar(inject_css=False):

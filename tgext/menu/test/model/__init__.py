@@ -24,3 +24,5 @@ class Dictionary(DeclarativeBase):
 
 def init_model(engine):
     DBSession.configure(bind=engine)
+    
+from auth import User, Group, Permission
