@@ -35,21 +35,20 @@ base_config = TestConfig(folder = 'rendering',
                                    'package':tgext.menu.test,
                                    'sqlalchemy.url':test_db_path,
                                    'variable_provider':menu_variable_provider,
-                                   #'auth_backend': 'sqlalchemy',
-                                   #'sa_auth': {
-                                       #'cookie_secret': 'ChAnGeMe',
-                                       #'dbsession': tgext.menu.test.model.DBSession,
-                                       #'user_class': User,
-                                       #'group_class': Group,
-                                       #'permission_class': Permission,
-                                       #'post_login_url': '/post_login',
-                                       #'post_logout_url': '/post_logout',
-                                       #'form_plugin': None,
-                                       #},
+                                   'auth_backend': 'sqlalchemy',
+                                   'sa_auth': {
+                                       'cookie_secret': 'ChAnGeMe',
+                                       'dbsession': tgext.menu.test.model.DBSession,
+                                       'user_class': User,
+                                       'group_class': Group,
+                                       'permission_class': Permission,
+                                       'post_login_url': '/post_login',
+                                       'post_logout_url': '/post_logout',
+                                       'form_plugin': None,
+                                       },
                                    
                                    'beaker.session.secret': 'ChAnGeMe',
                                    'beaker.session.key': 'tgext.menu.test',
-                                   'cache_dir': '%(here)s/data',
                                    'tgext': {
                                        'menu': {
                                            'sortorder': {
@@ -100,13 +99,14 @@ def setup_records(session):
     session.flush()
 
 def setup():
+    global metadata, DBSession
     engine = create_engine(test_db_path)
     metadata.bind = engine
     metadata.drop_all()
     metadata.create_all()
-    session = sessionmaker(bind=engine)()
-    setup_records(session)
-    session.commit()
+    DBSession = sessionmaker(bind=engine)()
+    setup_records(DBSession)
+    DBSession.commit()
 
 rendered_menu = """
 <div id="navbar_div">
@@ -139,8 +139,47 @@ rendered_menu = """
     </ul>
 </div>
 """
+
+rendered_admin_menu = """
+<div id="navbar_div">
+    <ul id="navbar" class="jd_menu">
+        <li><a href="/index">TestHome</a></li>
+        <li>Sub
+          <ul class="navbar_level1">
+            <li><a href="/sub1/index">Sub 1</a>
+              <ul class="navbar_level2">
+                <li><a href="/sub1/nested/index">Nested 1</a></li>
+              </ul>
+              </li>
+          </ul>
+          </li>
+        <li><a href="/sub1/admin">Admin App</a></li>
+        <li><a href="/sub1/spot">Foo Spot</a>
+          <ul class="navbar_level1">
+            <li><a href="/baz">Baz</a></li>
+            <li>Sub
+              <ul class="navbar_level2">
+                <li><a href="/sub1/baz">Baz</a></li>
+                <li><a href="/sub1/bar">Bar</a></li>
+                <li><a href="/sub1/foo">Foo</a></li>
+              </ul>
+              </li>
+            <li><a href="/bar">Bar</a></li>
+            <li><a href="/foo">Foo</a></li>
+          </ul>
+          </li>
+        <li><a href="/sub1/Sub2/bybye">ExitApp</a></li>
+    </ul>
+</div>
+"""
+
+
 class TestMenuDecorator:
     def __init__(self, *args, **kargs):
+        global DBSession
+        setup()
+        base_config['session'] = DBSession
+        base_config['sa_auth']['dbsession'] = DBSession
         self.app = app_from_config(base_config)
 
     def test_index(self):
@@ -148,10 +187,12 @@ class TestMenuDecorator:
         assert rendered_menu in resp, resp
 
     def test_index_loggedin(self):
-        assert 1==1
         resp = self.app.get('/login')
         form = resp.form
         form['login'] = u'manager'
-        form['password'] = u'password'
+        form['password'] = u'managepass'
         post_login = form.submit(status=302)
         assert post_login.location.startswith('http://localhost/post_login')
+        resp = self.app.get('/')
+        assert rendered_admin_menu in resp,resp
+
