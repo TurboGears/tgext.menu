@@ -91,8 +91,8 @@ In your controller code, you will be using one of three methods:
 
 menu path is simply a string of entries, separated by ||, indicating
 where this particular entry lives in the menu hierarchy. An example
-would be "Help || About" or "Edit || Copy", or "My || Deeply || Nested
-|| Submenu". Spaces around || will be stripped off, and are only put
+would be "Help || About" or "Edit || Copy", or "My || Deeply || Nested || Submenu".
+Spaces around || will be stripped off, and are only put
 in those strings for readability.
 
 If you use the @menu decorator, you will need to specify which menu
@@ -118,8 +118,11 @@ menu.
 In your app_cfg, you may have a section named "base_config.tgext_menu". The
 way to add this section is to produce code like this:
 
-    base_config.tgext_menu = {}
-    base_config.tgext_menu['inject_css'] = True
+{{{
+#!python
+base_config.tgext_menu = {}
+base_config.tgext_menu['inject_css'] = True
+}}}
 
 This has two possible parameters in it: inject_css and sortorder.
 
@@ -159,12 +162,14 @@ the value 999999. 'Foo' goes first.
 
 == Drawbacks ==
 
-As of right now, the menus are alphabetically sorted. This will be
-fixed in the next release, allowing you to specify the ordering of the
-menu entries.
+Permissions are not yet honored unless specified in the "permission" parameter
+to @menu, @navbar, or @sidebar: Any entries without permission parameteres
+will always show up for all users. This, too, will be fixed in the next
+release.
 
-Permissions are not yet honored: Any entries will always show up for
-all users. This, too, will be fixed in the next release.
+The next release will allow you to use your controller's @require permissions
+to control the display of the menu. The code is almost there now, but I wanted
+people to see what I have available to try out.
 
 Dynamic menu entries are possible right now, but not easy. A future
 release will provide support for menu_append and menu_remove methods.
