@@ -38,7 +38,7 @@ from genshi import HTML
 And place this where your navigation bar would go.
 {{{
 #!genshi
-${HTML(render_navbar(True))}
+${HTML(render_navbar())}
 }}}
 
 3. Add tgext.menu into your controllers. Place this code in any controllers that will be using tgext.menu:

@@ -8,13 +8,13 @@ except ImportError:
 
 setup(
     name='tgext.menu',
-    version='0.2',
+    version='0.4',
     description='Automatic menu/navbar/sidebar generation extension for TurboGears',
     author='Michael Pedersen',
     author_email='m.pedersen@icelus.org',
     url='http://bitbucket.org/pedersen/tgext.menu',
     install_requires=[
-        "TurboGears2 >= 2.1a2",
+        "TurboGears2 >= 2.1b1",
         "repoze.tm2 >= 1.0a4",
         'Mako >= 0.2.4',
         'tw.jquery',
@@ -32,5 +32,5 @@ setup(
             ('templates/**.html', 'genshi', None),
             ('public/**', 'ignore', None)]},
     package_data={'tgext.menu' : ['static/*', 'templates/*'] },
-    dependency_links=['http://www.turbogears.org/2.1/downloads/2.1a2']
+    dependency_links=['http://www.turbogears.org/2.1/downloads/current/index']
 )

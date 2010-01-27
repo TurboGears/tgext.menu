@@ -1,7 +1,6 @@
 include README
 include LICENSE
-include CONTRIBUTORS
-include THANKS
-recursive-include tgext *
+include tgext/menu/templates/*.mak
+recursive-exclude tgext/menu/test *
 global-exclude *.pyc
 global-exclude .DS_Store
