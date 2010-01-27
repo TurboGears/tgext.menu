@@ -1,5 +1,3 @@
-from operator import attrgetter
-
 from mako.template import Template
 
 from pkg_resources import Requirement, resource_string

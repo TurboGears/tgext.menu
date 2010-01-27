@@ -3,6 +3,8 @@ from tg.controllers import TGController
 from tgext.menu.test.model import DBSession
 import tgext.menu.test.model as model
 
+from repoze.what.predicates import Not, is_anonymous
+
 from tgext.menu import navbar
 
 class NestedController(TGController):
@@ -74,6 +76,12 @@ class RootController(TGController):
     @expose('genshi:tgext.menu.test.templates.index')
     def baz(self, *p, **kw):
         return dict()
+    
+    @navbar('Logout', permission=Not(is_anonymous()))
+    @expose('genshi:tgext.menu.test.templates.index')
+    def logout(self, *p, **kw):
+        return dict()
+    
     
     #### The following are required for auth stuff to work
     @expose('tgext.menu.test.templates.login')

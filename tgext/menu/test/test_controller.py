@@ -167,6 +167,7 @@ rendered_admin_menu = """
             <li><a href="/foo">Foo</a></li>
           </ul>
           </li>
+        <li><a href="/logout">Logout</a></li>
         <li><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
 </div>
