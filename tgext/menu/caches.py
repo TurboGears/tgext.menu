@@ -64,6 +64,7 @@ class shared_menu_cache(object):
             for menuitem in self._menuitems[menuname]:
                 mi = self._menuitems[menuname][menuitem]
                 mi._url = find_url(r, self._menuitems[menuname][menuitem])
+        self.needs_update = False
 
 
 def find_url(root, menuitem):

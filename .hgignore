@@ -4,3 +4,6 @@ tgext.menu.egg-info/*
 *.wpu
 dist/*
 build/*
+PasteScript-*.egg/*
+Paste-*.egg/*
+PasteDeploy-*.egg/*

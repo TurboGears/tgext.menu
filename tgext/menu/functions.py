@@ -82,11 +82,13 @@ def permission_met(permission):
     
 def render_menu(menuname, vertical=False):
     global sortorder
-    jquery_js.inject()
-    jquery_bgiframe_js.inject()
-    jquery_dimensions_js.inject()
-    jquery_position_js.inject()
-    jquery_jdmenu_js.inject()
+
+    if config.get('tgext_menu', {}).get('inject_js', True):
+        jquery_js.inject()
+        jquery_bgiframe_js.inject()
+        jquery_dimensions_js.inject()
+        jquery_position_js.inject()
+        jquery_jdmenu_js.inject()
     
     if config.get('tgext_menu', {}).get('inject_css', False):
         jquery_jdmenu_css.inject()

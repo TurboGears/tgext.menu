@@ -106,6 +106,8 @@ available to you in your template:
 The "vertical" parameter is used to tell jdMenu that this should be a vertical
 menu.
 
+== Configuration Options ==
+
 In your app_cfg, you may have a section named "base_config.tgext_menu". The
 way to add this section is to produce code like this:
 
@@ -117,10 +119,20 @@ base_config.tgext_menu['inject_css'] = True
 
 This has two possible parameters in it: inject_css and sortorder.
 
+=== inject_css : default False ===
+
 The "inject_css" parameter is used to inject the default CSS that
 comes from the [[http://jdsharp.us/jQuery/plugins/jdMenu/|jdMenu
 plugin]]. It is set to False,by default, so as to allow you to specify
 your own CSS.
+
+=== inject_js : default True ===
+
+The "inject_js" parameter allows you to turn off the javascript. In this case,
+you will have just a set of ul/li/a tags in your page representing the menu,
+and may do as you see fit with it.
+
+== sortorder: default None ===
 
 "sortorder" is a bit more complex to explain. Basically, using this, you can
 set up the sort ordering for your menus. This is done by assigning entries a
