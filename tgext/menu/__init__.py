@@ -15,6 +15,12 @@ def menu_variable_provider():
         render_sitemap = render_sitemap
     )
     
+    try:
+        from genshi import HTML
+        menu_vars['HTML'] = HTML
+    except ImportError:
+        pass
+    
     if app_variable_provider:
         menu_vars.update(app_variable_provider())
 

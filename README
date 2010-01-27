@@ -27,15 +27,6 @@ ${render_navbar()|n}
 
 **Genshi**
 
-Place this near the top of your template:
-{{{
-#!genshi
-<?python
-from genshi import HTML
-?>
-}}}
-
-And place this where your navigation bar would go.
 {{{
 #!genshi
 ${HTML(render_navbar())}
