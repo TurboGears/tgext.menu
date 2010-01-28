@@ -7,22 +7,32 @@ from pylons import config
 from repoze.what.predicates import NotAuthorizedError
 from repoze.what.predicates import has_permission
 from tg import request
-from tw.api import JSLink, CSSLink
-from tw.jquery import jquery_js, jquery_bgiframe_js, jquery_dimensions_js
+from tw2.core import JSLink, CSSLink
+from tw2.jquery import jquery_js
 
 from caches import shared_cache
 
+jquery_bgiframe_js = JSLink(
+    modname=__name__,
+    filename='static/js/jquery.bgiframe.js',
+    resources=[jquery_js])
+
+jquery_dimensions_js = JSLink(
+    modname=__name__,
+    filename='static/js/jquery.dimensions.js',
+    resources=[jquery_js])
+
 jquery_position_js = JSLink(
     modname=__name__,
-    filename='static/jquery.positionBy.js',
-    javascript=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js])
+    filename='static/js/jquery.positionBy.js',
+    resources=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js])
 
 jquery_jdmenu_js = JSLink(
     modname=__name__,
-    filename='static/jquery.jdMenu.js',
-    javascript=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js, jquery_position_js])
+    filename='static/js/jquery.jdMenu.js',
+    resources=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js, jquery_position_js]).req()
 
-jquery_jdmenu_css = CSSLink(modname=__name__, filename='static/jquery.jdMenu.css')
+jquery_jdmenu_css = CSSLink(modname=__name__, filename='static/css/jquery.jdMenu.css').req()
 
 sortorder = {}
 
@@ -84,14 +94,10 @@ def render_menu(menuname, vertical=False):
     global sortorder
 
     if config.get('tgext_menu', {}).get('inject_js', True):
-        jquery_js.inject()
-        jquery_bgiframe_js.inject()
-        jquery_dimensions_js.inject()
-        jquery_position_js.inject()
-        jquery_jdmenu_js.inject()
+        jquery_jdmenu_js.prepare()
     
     if config.get('tgext_menu', {}).get('inject_css', False):
-        jquery_jdmenu_css.inject()
+        jquery_jdmenu_css.prepare()
     
     menutree = OutputEntry(menuname)
     menu = shared_cache.getMenu(menuname)

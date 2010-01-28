@@ -23,6 +23,7 @@ paths=Bunch(
 
 base_config = TestConfig(folder = 'rendering',
                          values = {'use_sqlalchemy': True,
+                                   'use_toscawidgets2': True,
                                    'full_stack': True,
                                    'model':tgext.menu.test.model,
                                    'session':tgext.menu.test.model.DBSession,
@@ -186,6 +187,14 @@ class TestMenuDecorator:
         resp = self.app.get('/')
         assert rendered_menu in resp, resp
         
+    def test_inject_js(self):
+        resp = self.app.get('/')
+        assert 'jquery.js' in resp, resp
+        assert 'jquery.bgiframe.js' in resp, resp
+        assert 'jquery.dimensions.js' in resp, resp
+        assert 'jquery.positionBy.js' in resp, resp
+        assert 'jquery.jdMenu.js' in resp, resp
+
     def test_inject_css_true(self):
         resp = self.app.get('/')
         assert 'jquery.jdMenu.css' in resp, resp

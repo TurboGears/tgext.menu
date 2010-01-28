@@ -15,9 +15,10 @@ setup(
     url='http://bitbucket.org/pedersen/tgext.menu',
     install_requires=[
         "TurboGears2 >= 2.1b1",
-        "repoze.tm2 >= 1.0a4",
         'Mako >= 0.2.4',
-        'tw.jquery',
+        'tw2.jquery',
+        'tw2.core',
+        'tw2.forms',
         ],
     setup_requires=["PasteScript >= 1.7"],
     paster_plugins=['PasteScript', 'Pylons', 'TurboGears2', 'tg.devtools'],
