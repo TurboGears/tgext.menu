@@ -16,9 +16,6 @@ setup(
     install_requires=[
         "TurboGears2 >= 2.1b1",
         'Mako >= 0.2.4',
-        'tw2.jquery',
-        'tw2.core',
-        'tw2.forms',
         ],
     setup_requires=["PasteScript >= 1.7"],
     paster_plugins=['PasteScript', 'Pylons', 'TurboGears2', 'tg.devtools'],

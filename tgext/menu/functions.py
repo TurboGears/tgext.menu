@@ -7,33 +7,63 @@ from pylons import config
 from repoze.what.predicates import NotAuthorizedError
 from repoze.what.predicates import has_permission
 from tg import request
-from tw2.core import JSLink, CSSLink
-from tw2.jquery import jquery_js
 
 from caches import shared_cache
 
-jquery_bgiframe_js = JSLink(
-    modname=__name__,
-    filename='static/js/jquery.bgiframe.js',
-    resources=[jquery_js])
+use_tw2 = False
+jquery_bgiframe_js = None
+jquery_dimensions_js = None
+jquery_position_js = None
+jquery_jdmenu_js = None
+jquery_jdmenu_css = None
+jquery_js = None
 
-jquery_dimensions_js = JSLink(
-    modname=__name__,
-    filename='static/js/jquery.dimensions.js',
-    resources=[jquery_js])
+def init_resources():
+    global use_tw2, jquery_bgiframe_js, jquery_dimensions_js, jquery_position_js, jquery_jdmenu_js, jquery_jdmenu_css, jquery_js
 
-jquery_position_js = JSLink(
-    modname=__name__,
-    filename='static/js/jquery.positionBy.js',
-    resources=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js])
+    use_tw2 = config.get('use_toscawidgets2', False)
+    if use_tw2:
+        from tw2.core import JSLink, CSSLink
+        from tw2.jquery import jquery_js
+                
+        jquery_bgiframe_js = JSLink(
+            modname=__name__,
+            filename='static/js/jquery.bgiframe.js',
+            resources=[jquery_js])
+        
+        jquery_dimensions_js = JSLink(
+            modname=__name__,
+            filename='static/js/jquery.dimensions.js',
+            resources=[jquery_js])
+        
+        jquery_position_js = JSLink(
+            modname=__name__,
+            filename='static/js/jquery.positionBy.js',
+            resources=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js])
+        
+        jquery_jdmenu_js = JSLink(
+            modname=__name__,
+            filename='static/js/jquery.jdMenu.js',
+            resources=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js, jquery_position_js]).req()
+        
+        jquery_jdmenu_css = CSSLink(modname=__name__, filename='static/css/jquery.jdMenu.css').req()
+    else:
+        from tw.api import JSLink, CSSLink
+        from tw.jquery import jquery_js, jquery_bgiframe_js, jquery_dimensions_js
+        
+        jquery_position_js = JSLink(
+            modname=__name__,
+            filename='static/jquery.positionBy.js',
+            javascript=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js])
+    
+        jquery_jdmenu_js = JSLink(
+            modname=__name__,
+            filename='static/jquery.jdMenu.js',
+            javascript=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js, jquery_position_js])
+    
+        jquery_jdmenu_css = CSSLink(modname=__name__, filename='static/jquery.jdMenu.css')
 
-jquery_jdmenu_js = JSLink(
-    modname=__name__,
-    filename='static/js/jquery.jdMenu.js',
-    resources=[jquery_js, jquery_bgiframe_js, jquery_dimensions_js, jquery_position_js]).req()
-
-jquery_jdmenu_css = CSSLink(modname=__name__, filename='static/css/jquery.jdMenu.css').req()
-
+    
 sortorder = {}
 
 class OutputEntry(object):
@@ -92,13 +122,27 @@ def permission_met(permission):
     
 def render_menu(menuname, vertical=False):
     global sortorder
+    
+    if jquery_jdmenu_js is None:
+        init_resources()
 
-    if config.get('tgext_menu', {}).get('inject_js', True):
-        jquery_jdmenu_js.prepare()
+    if use_tw2:
+        if config.get('tgext_menu', {}).get('inject_js', True):
+            jquery_jdmenu_js.prepare()
     
-    if config.get('tgext_menu', {}).get('inject_css', False):
-        jquery_jdmenu_css.prepare()
-    
+        if config.get('tgext_menu', {}).get('inject_css', False):
+            jquery_jdmenu_css.prepare()
+    else:
+        if config.get('tgext_menu', {}).get('inject_js', True):
+            jquery_js.inject()
+            jquery_bgiframe_js.inject()
+            jquery_dimensions_js.inject()
+            jquery_position_js.inject()
+            jquery_jdmenu_js.inject()
+        
+        if config.get('tgext_menu', {}).get('inject_css', True):
+            jquery_jdmenu_css.inject()
+        
     menutree = OutputEntry(menuname)
     menu = shared_cache.getMenu(menuname)
     sortorder = config.get('tgext_menu', {}).get('sortorder', {})
