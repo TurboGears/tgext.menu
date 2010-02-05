@@ -11,7 +11,7 @@ from tgext.menu.test.model import metadata, DBSession, User, Group, Permission
 from tgext.menu.caches import shared_cache
 from tgext.menu.test.model import Dictionary
 from tgext.menu import menu_variable_provider
-from tgext.menu.functions import init_resources
+from tgext.menu.util import init_resources
 
         
 root = os.path.abspath(os.path.dirname(__file__))
