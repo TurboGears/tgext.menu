@@ -114,33 +114,33 @@ def setup():
 rendered_menu = """
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
-        <li><a href="/index">TestHome</a></li>
+        <li class="first"><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
-            <li><a href="http://www.google.com/">Google</a></li>
+            <li class="first"><a href="http://www.google.com/">Google</a></li>
             <li><a href="/sub1/index">Sub 1</a>
               <ul class="navbar_level2">
-                <li><a href="/sub1/nested/index">Nested 1</a></li>
+                <li class="first last"><a href="/sub1/nested/index">Nested 1</a></li>
               </ul>
               </li>
-            <li><a href="/sub1/nested/yan">Yet Another</a></li>
+            <li class="last"><a href="/sub1/nested/yan">Yet Another</a></li>
           </ul>
           </li>
         <li><a href="/sub1/spot">Foo Spot</a>
           <ul class="navbar_level1">
-            <li><a href="/baz">Baz</a></li>
+            <li class="first"><a href="/baz">Baz</a></li>
             <li>Sub
               <ul class="navbar_level2">
-                <li><a href="/sub1/baz">Baz</a></li>
+                <li class="first"><a href="/sub1/baz">Baz</a></li>
                 <li><a href="/sub1/bar">Bar</a></li>
-                <li><a href="/sub1/foo">Foo</a></li>
+                <li class="last"><a href="/sub1/foo">Foo</a></li>
               </ul>
               </li>
             <li><a href="/bar">Bar</a></li>
-            <li><a href="/foo">Foo</a></li>
+            <li class="last"><a href="/foo">Foo</a></li>
           </ul>
           </li>
-        <li><a href="/sub1/Sub2/bybye">ExitApp</a></li>
+        <li class="last"><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
 </div>
 """
@@ -148,35 +148,35 @@ rendered_menu = """
 rendered_admin_menu = """
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
-        <li><a href="/index">TestHome</a></li>
+        <li class="first"><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
-            <li><a href="http://www.google.com/">Google</a></li>
+            <li class="first"><a href="http://www.google.com/">Google</a></li>
             <li><a href="/sub1/index">Sub 1</a>
               <ul class="navbar_level2">
-                <li><a href="/sub1/nested/index">Nested 1</a></li>
+                <li class="first last"><a href="/sub1/nested/index">Nested 1</a></li>
               </ul>
               </li>
-            <li><a href="/sub1/nested/yan">Yet Another</a></li>
+            <li class="last"><a href="/sub1/nested/yan">Yet Another</a></li>
           </ul>
           </li>
         <li><a href="/sub1/admin">Admin App</a></li>
         <li><a href="/sub1/spot">Foo Spot</a>
           <ul class="navbar_level1">
-            <li><a href="/baz">Baz</a></li>
+            <li class="first"><a href="/baz">Baz</a></li>
             <li>Sub
               <ul class="navbar_level2">
-                <li><a href="/sub1/baz">Baz</a></li>
+                <li class="first"><a href="/sub1/baz">Baz</a></li>
                 <li><a href="/sub1/bar">Bar</a></li>
-                <li><a href="/sub1/foo">Foo</a></li>
+                <li class="last"><a href="/sub1/foo">Foo</a></li>
               </ul>
               </li>
             <li><a href="/bar">Bar</a></li>
-            <li><a href="/foo">Foo</a></li>
+            <li class="last"><a href="/foo">Foo</a></li>
           </ul>
           </li>
         <li><a href="/logout">Logout</a></li>
-        <li><a href="/sub1/Sub2/bybye">ExitApp</a></li>
+        <li class="last"><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
 </div>
 """
