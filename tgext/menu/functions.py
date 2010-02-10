@@ -1,3 +1,5 @@
+from sys import _getframe
+
 from mako.template import Template
 
 from pkg_resources import Requirement, resource_string
@@ -5,18 +7,56 @@ divmenu = Template(resource_string(Requirement.parse("tgext.menu"),"tgext/menu/t
 
 from pylons import config
 
-from tgext.menu.caches import shared_cache
-
+from tgext.menu.caches import shared_cache, entry
 from tgext.menu.util import init_resources, OutputEntry
 from tgext.menu.util import sort_entry, permission_met
 
 jquery_bgiframe_js = jquery_dimensions_js = jquery_jdmenu_js = jquery_js = jquery_position_js = jquery_jdmenu_css = sortorder = None
 use_tw2 = False
 
+##############################################################################
+## 
+##############################################################################
 def url_from_menu():
     # @todo: make a function that will return the url for the given menu path
     raise NotImplementedError('url_from_menu: Not Yet Implemented')
 
+##############################################################################
+## 
+##############################################################################
+def menu_append(path, name, extension='html', permission=None, url=None, base=None):
+    item = entry(path, name, extension, permission, url)
+    item.base = base
+    shared_cache.addEntry(item)
+
+def navbar_append(path, extension='html', permission=None, url=None, base=None):
+    menu_append(path, u'navbar', extension, permission, url, base)
+
+def sidebar_append(path, extension='html', permission=None, url=None, base=None):
+    menu_append(path, u'sidebar', extension, permission, url, base)
+
+def sitemap_append(path, extension='html', permission=None, url=None, base=None):
+    menu_append(path, u'sitemap', extension, permission, url, base)
+
+##############################################################################
+## 
+##############################################################################
+def menu_remove(path, name):
+    item = entry(path, name, None, None, None)
+    shared_cache.removeEntry(item)
+
+def navbar_remove(path):
+    menu_remove(path, u'navbar')
+
+def sidebar_remove(path):
+    menu_remove(path, u'sidebar')
+
+def sitemap_remove(path):
+    menu_remove(path, u'sitemap')
+
+##############################################################################
+## 
+##############################################################################
 def render_menu(menuname, vertical=False):
     global jquery_bgiframe_js, jquery_dimensions_js, jquery_jdmenu_js, jquery_js, jquery_position_js, jquery_jdmenu_css, sortorder, use_tw2
     

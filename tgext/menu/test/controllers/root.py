@@ -5,9 +5,16 @@ import tgext.menu.test.model as model
 
 from repoze.what.predicates import Not, is_anonymous
 
-from tgext.menu import navbar
+from tgext.menu import navbar, navbar_append, navbar_remove
 
 class NestedController(TGController):
+    def __init__(self):
+        super(TGController, self).__init__()
+        navbar_append('Sub || Google', url='http://www.google.com/')
+        navbar_append('Sub || Yet Another', url='yan', base=self)
+        navbar_append('Sub || Remove Me', url='byebye', base=self)
+        navbar_remove('Sub || Remove Me')
+    
     @navbar('Sub || Sub 1 || Nested 1')
     @expose('genshi:tgext.menu.test.templates.index')
     def index(self, *p, **kw):

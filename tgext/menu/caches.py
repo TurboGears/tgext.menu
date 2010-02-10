@@ -1,5 +1,7 @@
 import sys
 
+from inspect import isfunction
+
 from pylons import config
 from tg.controllers import TGController
 
@@ -12,6 +14,7 @@ class entry(object):
         self._permission = permission
         self._url = url
         self.func = None
+        self.base = None
         
     def __str__(self):
         return '%s at %s' % (str(self._path), str(self._url))
@@ -68,16 +71,28 @@ class shared_menu_cache(object):
 
 
 def find_url(root, menuitem):
-    n = menuitem.func.__name__
-    if n in root.__dict__:
-        if root.__dict__[n] is menuitem.func:
-            return '/%s' % (n)
-    for i in root.__dict__:
-        controller = root.__dict__[i]
-        if hasattr(controller, '_dispatch'):
-            v = find_url(controller.__class__, menuitem)
-            if v is not None:
-                return '/%s%s' % (i, v)
+    if ':' in str(menuitem._url):
+        return menuitem._url
+    if not(menuitem.base):
+        n = menuitem.func.__name__
+        if n in root.__dict__:
+            if root.__dict__[n] is menuitem.func:
+                return '/%s' % (n)
+        for i in root.__dict__:
+            controller = root.__dict__[i]
+            if hasattr(controller, '_dispatch'):
+                v = find_url(controller.__class__, menuitem)
+                if v is not None:
+                    return '/%s%s' % (i, v)
+    else:
+        for i in root.__dict__:
+            controller = root.__dict__[i]
+            if controller is menuitem.base:
+                return '/%s/%s' % (i, menuitem._url)
+            if hasattr(controller, '_dispatch'):
+                v = find_url(controller.__class__, menuitem)
+                if v is not None:
+                    return '/%s%s' %(i, v)
     return None
 
 shared_cache = shared_menu_cache()
