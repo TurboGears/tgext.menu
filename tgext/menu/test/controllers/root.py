@@ -14,6 +14,7 @@ class NestedController(TGController):
         navbar_append('Sub || Yet Another', url='yan', base=self)
         navbar_append('Sub || Remove Me', url='byebye', base=self)
         navbar_remove('Sub || Remove Me')
+        navbar_append('Sub || Get Json', url='jsonify', base=self, extension='json')
     
     @navbar('Sub || Sub 1 || Nested 1')
     @expose('genshi:tgext.menu.test.templates.index')

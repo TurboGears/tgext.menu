@@ -117,7 +117,8 @@ rendered_menu = """
         <li class="first"><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
-            <li class="first"><a href="http://www.google.com/">Google</a></li>
+            <li class="first"><a href="/sub1/nested/jsonify.json">Get Json</a></li>
+            <li><a href="http://www.google.com/">Google</a></li>
             <li><a href="/sub1/index">Sub 1</a>
               <ul class="navbar_level2">
                 <li class="first last"><a href="/sub1/nested/index">Nested 1</a></li>
@@ -151,7 +152,8 @@ rendered_admin_menu = """
         <li class="first"><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
-            <li class="first"><a href="http://www.google.com/">Google</a></li>
+            <li class="first"><a href="/sub1/nested/jsonify.json">Get Json</a></li>
+            <li><a href="http://www.google.com/">Google</a></li>
             <li><a href="/sub1/index">Sub 1</a>
               <ul class="navbar_level2">
                 <li class="first last"><a href="/sub1/nested/index">Nested 1</a></li>

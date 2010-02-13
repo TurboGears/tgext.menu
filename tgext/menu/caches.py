@@ -67,6 +67,8 @@ class shared_menu_cache(object):
             for menuitem in self._menuitems[menuname]:
                 mi = self._menuitems[menuname][menuitem]
                 mi._url = find_url(r, self._menuitems[menuname][menuitem])
+                if mi._extension:
+                    mi._url = '%s.%s' % (mi._url, mi._extension)
         self.needs_update = False
 
 

@@ -24,18 +24,18 @@ def url_from_menu():
 ##############################################################################
 ## 
 ##############################################################################
-def menu_append(path, name, extension='html', permission=None, url=None, base=None):
+def menu_append(path, name, extension=None, permission=None, url=None, base=None):
     item = entry(path, name, extension, permission, url)
     item.base = base
     shared_cache.addEntry(item)
 
-def navbar_append(path, extension='html', permission=None, url=None, base=None):
+def navbar_append(path, extension=None, permission=None, url=None, base=None):
     menu_append(path, u'navbar', extension, permission, url, base)
 
-def sidebar_append(path, extension='html', permission=None, url=None, base=None):
+def sidebar_append(path, extension=None, permission=None, url=None, base=None):
     menu_append(path, u'sidebar', extension, permission, url, base)
 
-def sitemap_append(path, extension='html', permission=None, url=None, base=None):
+def sitemap_append(path, extension=None, permission=None, url=None, base=None):
     menu_append(path, u'sitemap', extension, permission, url, base)
 
 ##############################################################################
