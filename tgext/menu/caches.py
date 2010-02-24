@@ -5,6 +5,8 @@ from inspect import isfunction
 from pylons import config
 from tg.controllers import TGController
 
+rootcon = None
+
 class entry(object):
     def __init__(self, path, name, extension, permission, url):
         self._path = path
@@ -60,13 +62,15 @@ class shared_menu_cache(object):
         return self._menuitems[menuname] if menuname in self._menuitems else dict()
     
     def updateUrls(self):
-        pname = '%s.controllers.root' % (config['package'].__name__)
-        __import__(pname)
-        r = sys.modules[pname].RootController
+        global rootcon
+        if not rootcon:
+            pname = '%s.controllers.root' % (config['package'].__name__)
+            __import__(pname)
+            rootcon = sys.modules[pname].RootController
         for menuname in self._menuitems:
             for menuitem in self._menuitems[menuname]:
                 mi = self._menuitems[menuname][menuitem]
-                mi._url = find_url(r, self._menuitems[menuname][menuitem])
+                mi._url = find_url(rootcon, self._menuitems[menuname][menuitem])
                 if mi._extension:
                     mi._url = '%s.%s' % (mi._url, mi._extension)
         self.needs_update = False

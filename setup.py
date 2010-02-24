@@ -23,7 +23,7 @@ setup(
     namespace_packages=['tgext'],
     include_package_data=True,
     test_suite='nose.collector',
-    tests_require=['WebTest', 'BeautifulSoup', "zope.sqlalchemy >= 0.4 ",],
+    tests_require=['WebTest', 'BeautifulSoup', "zope.sqlalchemy >= 0.4 ", "tw2.jquery", "tw2.forms", "tw2.core"],
     message_extractors={'tgextmenu': [
             ('**.py', 'python', None),
             ('templates/**.mako', 'mako', None),

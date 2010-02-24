@@ -163,6 +163,7 @@ rendered_admin_menu = """
           </ul>
           </li>
         <li><a href="/sub1/admin">Admin App</a></li>
+        <li><a href="/arena/index">Arena</a></li>
         <li><a href="/sub1/spot">Foo Spot</a>
           <ul class="navbar_level1">
             <li class="first"><a href="/baz">Baz</a></li>
@@ -192,7 +193,7 @@ class TestMenuDecorator:
         base_config['sa_auth']['dbsession'] = DBSession
         self.app = app_from_config(base_config)
 
-    def test_index(self):
+    def test_index_not_logged_in(self):
         resp = self.app.get('/')
         assert rendered_menu in resp, resp
         

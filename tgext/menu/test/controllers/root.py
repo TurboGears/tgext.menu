@@ -1,9 +1,9 @@
-from tg import config, expose, request
+from tg import config, expose, request, require
 from tg.controllers import TGController
 from tgext.menu.test.model import DBSession
 import tgext.menu.test.model as model
 
-from repoze.what.predicates import Not, is_anonymous
+from repoze.what.predicates import Not, is_anonymous, has_permission
 
 from tgext.menu import navbar, navbar_append, navbar_remove
 
@@ -62,8 +62,18 @@ class SubController(TGController):
         return dict()    
     
 
+class InvisibleArena(TGController):
+    allow_only = has_permission('manage')
+    
+    @navbar('Arena')
+    @expose('genshi:tgext.menu.test.templates.index')
+    def index(self, *p, **kw):
+        return dict()
+    
+
 class RootController(TGController):
     sub1 = SubController()
+    arena = InvisibleArena()
     
     @navbar('TestHome')
     @expose('genshi:tgext.menu.test.templates.index')
@@ -124,5 +134,3 @@ class RootController(TGController):
         """
         flash(_('We hope to see you soon!'))
         redirect(came_from)
-
-

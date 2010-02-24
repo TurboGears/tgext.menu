@@ -1,3 +1,5 @@
+import sys
+
 from pylons import config
 from tg import request
 
@@ -14,6 +16,8 @@ jquery_jdmenu_js = None
 jquery_jdmenu_css = None
 jquery_js = None
 sortorder = {}
+
+rootcon = None
 
 class OutputEntry(object):
     def __init__(self, name, href=None):
@@ -106,20 +110,43 @@ def sort_entry(ent1, ent2):
         idx += 1
     return cmp(ent1._mpath, ent2._mpath)
 
-def permission_met(permission):
-    if permission is None:
-        return True
-    elif type(permission) is str:
+def permission_met(menu):
+    global rootcon
+    retval = True
+    
+    if not rootcon:
+        pname = '%s.controllers.root' % (config['package'].__name__)
+        __import__(pname)
+        rootcon = sys.modules[pname].RootController
+
+    # Check to see if specific menu permission has been set
+    permission = menu._permission
+    if type(permission) is str:
         try:
             has_permission(permission).check_authorization(request.environ)
             return True
         except NotAuthorizedError:
             return False
-    else:
+    elif permission is not None:
         try:
             permission.check_authorization(request.environ)
             return True
         except:
             return False
-    
+    else:
+        # No specific menu permission has been set, walk the tree
+        lpath = menu._url.split('/')[1:]
+        currcon = rootcon
+        for component in lpath:
+            if hasattr(currcon, 'allow_only'):
+                try:
+                    getattr(currcon, 'allow_only').check_authorization(request.environ)
+                except:
+                    return False
+            if hasattr(currcon, component):
+                currcon = getattr(currcon, component)
+            else:
+                break
+        
+    return True
 

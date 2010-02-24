@@ -83,7 +83,7 @@ def render_menu(menuname, vertical=False):
         
     menutree = OutputEntry(menuname)
     menu = shared_cache.getMenu(menuname)
-    shortmenu = [menu[key] for key in filter(lambda x: permission_met(menu[x]._permission), menu.keys())]
+    shortmenu = [menu[key] for key in filter(lambda x: permission_met(menu[x]), menu.keys())]
     for menuitem in sorted(shortmenu, sort_entry):
         menutree.appendPath(menuitem._mpath, str(menuitem._url))
     return divmenu.render(menulist=menutree, name=menuname, vertical_menu=vertical)

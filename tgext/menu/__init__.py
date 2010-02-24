@@ -1,3 +1,5 @@
+import sys
+
 from tg.configuration import Bunch
 from pylons import config
 
