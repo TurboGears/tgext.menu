@@ -61,7 +61,7 @@ class SubController(TGController):
     def admin(self, *p, **kw):
         return dict()    
     
-    @navbar('Style Me', extras={'style':'font-color: black'})
+    @navbar('Style Me', extras={'style':'font-color: black', 'extratext' : 'Right now!'})
     @expose('genshi:tgext.menu.test.templates.index')
     def styleme(self, *p, **kw):
         return dict()    
