@@ -5,7 +5,7 @@ import tgext.menu.test.model as model
 
 from repoze.what.predicates import Not, is_anonymous, has_permission
 
-from tgext.menu import navbar, navbar_append, navbar_remove
+from tgext.menu import navbar, navbar_append, navbar_remove, register_callback_navbar, entry, deregister_callback_navbar
 
 class NestedController(TGController):
     def __init__(self):
@@ -76,10 +76,17 @@ class InvisibleArena(TGController):
         return dict()
     
 
+def AddToNavBar(menuname):
+    o = entry('Add Me', 'navbar', None, None, '/nowhere')
+    return [o]
+    
+register_callback_navbar(AddToNavBar)
+
 class RootController(TGController):
     sub1 = SubController()
     arena = InvisibleArena()
     
+        
     @navbar('TestHome')
     @expose('genshi:tgext.menu.test.templates.index')
     def index(self, *p, **kw):

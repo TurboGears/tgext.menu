@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 from tgext.menu.test.model import metadata, DBSession, User, Group, Permission
-from tgext.menu.caches import shared_cache
+from tgext.menu.caches import shared_cache, callbacks, deregister_callback_navbar
 from tgext.menu.test.model import Dictionary
 from tgext.menu import menu_variable_provider
 from tgext.menu.util import init_resources
@@ -127,6 +127,7 @@ rendered_menu = """
             <li class="last"><a href="/sub1/nested/yan">Yet Another</a></li>
           </ul>
           </li>
+        <li><a href="/nowhere">Add Me</a></li>
         <li><a href="/sub1/spot">Foo Spot</a>
           <ul class="navbar_level1">
             <li class="first"><a href="/baz">Baz</a></li>
@@ -163,6 +164,7 @@ rendered_admin_menu = """
             <li class="last"><a href="/sub1/nested/yan">Yet Another</a></li>
           </ul>
           </li>
+        <li><a href="/nowhere">Add Me</a></li>
         <li><a href="/sub1/admin">Admin App</a></li>
         <li><a href="/arena/index">Arena</a></li>
         <li><a href="/sub1/spot">Foo Spot</a>
@@ -194,7 +196,7 @@ class TestMenuDecorator:
         base_config['session'] = DBSession
         base_config['sa_auth']['dbsession'] = DBSession
         self.app = app_from_config(base_config)
-
+            
     def test_index_not_logged_in(self):
         resp = self.app.get('/')
         assert rendered_menu in resp, resp

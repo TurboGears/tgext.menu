@@ -8,7 +8,7 @@ divmenu = Template(resource_string(Requirement.parse("tgext.menu"),"tgext/menu/t
 
 from pylons import config
 
-from tgext.menu.caches import shared_cache, entry
+from tgext.menu.caches import shared_cache, entry, callbacks
 from tgext.menu.util import init_resources, OutputEntry
 from tgext.menu.util import sort_entry, permission_met
 
@@ -85,6 +85,12 @@ def render_menu(menuname, vertical=False, active=None):
     menutree = OutputEntry(menuname)
     menu = shared_cache.getMenu(menuname)
     shortmenu = [menu[key] for key in filter(lambda x: permission_met(menu[x]), menu.keys())]
+    if menuname in callbacks:
+        for callback in callbacks[menuname]:
+            try:
+                shortmenu.extend(callback(menuname))
+            except:
+                pass
     if active:
         splitpath = [x.strip() for x in active.split('||')]
     else:

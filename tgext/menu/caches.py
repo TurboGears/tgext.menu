@@ -106,4 +106,40 @@ def find_url(root, menuitem):
                     return '/%s%s' %(i, v)
     return None
 
+def register_callback(menuname, func):
+    if menuname not in callbacks:
+        callbacks[menuname] = []
+    
+    if func not in callbacks[menuname]:
+        callbacks[menuname].append(func)
+
+def register_callback_navbar(func):
+    register_callback(u'navbar', func)
+
+def register_callback_sidebar(func):
+    register_callback(u'sidebar', func)
+    
+def register_callback_sitemap(func):
+    register_callback(u'sitemap', func)
+    
+def deregister_callback(menuname, func):
+    if menuname not in callbacks:
+        return
+    
+    if func not in callbacks[menuname]:
+        return
+    
+    callbacks[menuname].remove(func)
+
+def deregister_callback_navbar(func):
+    deregister_callback(u'navbar', func)
+
+def deregister_callback_sidebar(func):
+    deregister_callback(u'sidebar', func)
+    
+def deregister_callback_sitemap(func):
+    deregister_callback(u'sitemap', func)
+    
+
 shared_cache = shared_menu_cache()
+callbacks = {'navbar': [], 'sidebar': [], 'sitemap': []}
