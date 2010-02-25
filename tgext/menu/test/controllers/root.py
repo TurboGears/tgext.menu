@@ -83,7 +83,7 @@ class RootController(TGController):
     @navbar('TestHome')
     @expose('genshi:tgext.menu.test.templates.index')
     def index(self, *p, **kw):
-        return dict()
+        return dict(currpage='TestHome')
 
     @navbar('Foo Spot || Foo')
     @expose('genshi:tgext.menu.test.templates.index')

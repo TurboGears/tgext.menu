@@ -114,7 +114,7 @@ def setup():
 rendered_menu = """
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
-        <li class="first"><a href="/index">TestHome</a></li>
+        <li class="active first"><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
             <li class="first"><a href="/sub1/nested/jsonify.json">Get Json</a></li>
@@ -150,7 +150,7 @@ rendered_menu = """
 rendered_admin_menu = """
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
-        <li class="first"><a href="/index">TestHome</a></li>
+        <li class="active first"><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
             <li class="first"><a href="/sub1/nested/jsonify.json">Get Json</a></li>

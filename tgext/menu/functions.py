@@ -1,3 +1,4 @@
+from copy import deepcopy
 from sys import _getframe
 
 from mako.template import Template
@@ -57,7 +58,7 @@ def sitemap_remove(path):
 ##############################################################################
 ## 
 ##############################################################################
-def render_menu(menuname, vertical=False):
+def render_menu(menuname, vertical=False, active=None):
     global jquery_bgiframe_js, jquery_dimensions_js, jquery_jdmenu_js, jquery_js, jquery_position_js, jquery_jdmenu_css, sortorder, use_tw2
     
     if jquery_jdmenu_js is None:
@@ -84,15 +85,24 @@ def render_menu(menuname, vertical=False):
     menutree = OutputEntry(menuname)
     menu = shared_cache.getMenu(menuname)
     shortmenu = [menu[key] for key in filter(lambda x: permission_met(menu[x]), menu.keys())]
+    if active:
+        splitpath = [x.strip() for x in active.split('||')]
+    else:
+        splitpath = None
     for menuitem in sorted(shortmenu, sort_entry):
-        menutree.appendPath(menuitem._mpath, str(menuitem._url), menuitem.extras)
+        if menuitem._mpath == splitpath:
+            extras = deepcopy(menuitem.extras)
+            extras['class'].append('active')
+        else:
+            extras = menuitem.extras
+        menutree.appendPath(menuitem._mpath, str(menuitem._url), extras)
     return divmenu.render(menulist=menutree, name=menuname, vertical_menu=vertical)
 
-def render_navbar(vertical=False):
-    return render_menu(u'navbar', vertical)
+def render_navbar(vertical=False, active=None):
+    return render_menu(u'navbar', vertical, active)
 
-def render_sidebar(vertical=False):
-    return render_menu(u'sidebar', vertical)
+def render_sidebar(vertical=False, active=None):
+    return render_menu(u'sidebar', vertical, active)
 
 def render_sitemap(vertical=False):
     raise NotImplementedError('render_sitemap: Not Yet Implemented')

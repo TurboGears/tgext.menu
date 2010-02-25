@@ -14,7 +14,12 @@
 
 
 <!-- navbar renders here -->
+<py:if test="defined('currpage')">
+${HTML(render_navbar(False, currpage))}
+</py:if>
+<py:if test="not defined('currpage')">
 ${HTML(render_navbar(False))}
+</py:if>
 <!-- end: navbar renders here -->
 
 <!-- vertical navbar renders here -->
