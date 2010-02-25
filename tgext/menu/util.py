@@ -1,4 +1,5 @@
 import sys
+from copy import deepcopy
 
 from pylons import config
 from tg import request
@@ -20,23 +21,27 @@ sortorder = {}
 rootcon = None
 
 class OutputEntry(object):
-    def __init__(self, name, href=None):
+    def __init__(self, name, href=None, extras={}):
         self.children = []
         self.href = href
         self.name = name
+        self.extras = deepcopy(extras)
+        
+        if 'class' not in self.extras:
+            self.extras['class'] = []
 
-    def appendPath(self, name, href):
+    def appendPath(self, name, href, extras={}):
         # name is a list of paths, i.e.: ['Foo Spot', 'Bar']
         if len(name) > 1:
             try:
                 idx = self.children.index(name[0])
             except ValueError:
-                child = OutputEntry(name[0])
+                child = OutputEntry(name[0], extras=extras)
                 self.children.append(child)
                 idx = len(self.children)-1
-            self.children[idx].appendPath(name[1:], href)
+            self.children[idx].appendPath(name[1:], href, extras)
         else:
-            child = OutputEntry(name[0], href)
+            child = OutputEntry(name[0], href, extras=extras)
             self.children.append(child)
     
     def __eq__(self, othername):

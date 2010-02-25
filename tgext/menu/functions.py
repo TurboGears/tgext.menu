@@ -24,19 +24,19 @@ def url_from_menu():
 ##############################################################################
 ## 
 ##############################################################################
-def menu_append(path, name, extension=None, permission=None, url=None, base=None):
-    item = entry(path, name, extension, permission, url)
+def menu_append(path, name, extension=None, permission=None, url=None, base=None, extras={}):
+    item = entry(path, name, extension, permission, url, extras)
     item.base = base
     shared_cache.addEntry(item)
 
-def navbar_append(path, extension=None, permission=None, url=None, base=None):
-    menu_append(path, u'navbar', extension, permission, url, base)
+def navbar_append(path, extension=None, permission=None, url=None, base=None, extras={}):
+    menu_append(path, u'navbar', extension, permission, url, base, extras)
 
-def sidebar_append(path, extension=None, permission=None, url=None, base=None):
-    menu_append(path, u'sidebar', extension, permission, url, base)
+def sidebar_append(path, extension=None, permission=None, url=None, base=None, extras={}):
+    menu_append(path, u'sidebar', extension, permission, url, base, extras)
 
-def sitemap_append(path, extension=None, permission=None, url=None, base=None):
-    menu_append(path, u'sitemap', extension, permission, url, base)
+def sitemap_append(path, extension=None, permission=None, url=None, base=None, extras={}):
+    menu_append(path, u'sitemap', extension, permission, url, base, extras)
 
 ##############################################################################
 ## 
@@ -85,7 +85,7 @@ def render_menu(menuname, vertical=False):
     menu = shared_cache.getMenu(menuname)
     shortmenu = [menu[key] for key in filter(lambda x: permission_met(menu[x]), menu.keys())]
     for menuitem in sorted(shortmenu, sort_entry):
-        menutree.appendPath(menuitem._mpath, str(menuitem._url))
+        menutree.appendPath(menuitem._mpath, str(menuitem._url), menuitem.extras)
     return divmenu.render(menulist=menutree, name=menuname, vertical_menu=vertical)
 
 def render_navbar(vertical=False):

@@ -141,6 +141,7 @@ rendered_menu = """
             <li class="last"><a href="/foo">Foo</a></li>
           </ul>
           </li>
+        <li style="font-color: black"><a href="/sub1/styleme">Style Me</a></li>
         <li class="last"><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
 </div>
@@ -179,6 +180,7 @@ rendered_admin_menu = """
           </ul>
           </li>
         <li><a href="/logout">Logout</a></li>
+        <li style="font-color: black"><a href="/sub1/styleme">Style Me</a></li>
         <li class="last"><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
 </div>

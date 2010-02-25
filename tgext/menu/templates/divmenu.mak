@@ -7,22 +7,22 @@
 <%
     def writeList(level, mlist, first=False, last=False):
         tabs = '    '*(level+2)
-        if first and last:
-            htmlclass = ' class="first last"'
-        elif first:
-            htmlclass = ' class="first"'
-        elif last:
-            htmlclass = ' class="last"'
+        if first: mlist.extras['class'].append('first')
+        if last: mlist.extras['class'].append('last')
+        if len(mlist.extras['class']) > 0:
+            htmlclass = ' class="%s"' % (" ".join(mlist.extras['class']))
         else:
             htmlclass = ""
+        attrstring = " ".join(['%s="%s"' % (x, mlist.extras[x]) for x in filter(lambda x: x not in ['class', 'extratext'], mlist.extras.keys())])
+        if attrstring: attrstring=" " + attrstring
         if mlist.href:
             href = '<a href="%s">%s</a>' % (url(mlist.href), escape(mlist.name, True))
         else:
             href = escape(mlist.name, True)
         if len(mlist.children) == 0:
-            context.write('%s<li%s>%s</li>\n' % (tabs, htmlclass, href))
+            context.write('%s<li%s%s>%s</li>\n' % (tabs, htmlclass, attrstring, href))
         else:
-            context.write('%s<li%s>%s\n%s  <ul class="%s_level%s">\n' % (tabs, htmlclass, href, tabs, name, level+1))
+            context.write('%s<li%s%s>%s\n%s  <ul class="%s_level%s">\n' % (tabs, htmlclass, attrstring, href, tabs, name, level+1))
             for child in mlist.children:
                 writeList(level+1, child, child==mlist.children[0], child==mlist.children[-1])
             context.write('%s  </ul>\n' % (tabs))

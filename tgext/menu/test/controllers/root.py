@@ -61,6 +61,11 @@ class SubController(TGController):
     def admin(self, *p, **kw):
         return dict()    
     
+    @navbar('Style Me', extras={'style':'font-color: black'})
+    @expose('genshi:tgext.menu.test.templates.index')
+    def styleme(self, *p, **kw):
+        return dict()    
+    
 
 class InvisibleArena(TGController):
     allow_only = has_permission('manage')

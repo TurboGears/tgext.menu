@@ -1,5 +1,6 @@
 import sys
 
+from copy import deepcopy
 from inspect import isfunction
 
 from pylons import config
@@ -8,7 +9,7 @@ from tg.controllers import TGController
 rootcon = None
 
 class entry(object):
-    def __init__(self, path, name, extension, permission, url):
+    def __init__(self, path, name, extension, permission, url, extras={}):
         self._path = path
         self._mpath = [x.strip() for x in path.split('||')]
         self._name = name
@@ -17,6 +18,10 @@ class entry(object):
         self._url = url
         self.func = None
         self.base = None
+        self.extras = deepcopy(extras)
+        
+        if 'class' not in self.extras:
+            self.extras['class'] = []
         
     def __str__(self):
         return '%s at %s' % (str(self._path), str(self._url))
@@ -71,7 +76,7 @@ class shared_menu_cache(object):
             for menuitem in self._menuitems[menuname]:
                 mi = self._menuitems[menuname][menuitem]
                 mi._url = find_url(rootcon, self._menuitems[menuname][menuitem])
-                if mi._extension:
+                if mi._url and mi._extension:
                     mi._url = '%s.%s' % (mi._url, mi._extension)
         self.needs_update = False
 
