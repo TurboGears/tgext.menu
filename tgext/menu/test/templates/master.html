@@ -26,6 +26,9 @@ ${HTML(render_navbar(False))}
 ${HTML(render_navbar(True))}
 <!-- end: vertical navbar renders here -->
 
+<!-- render sidebar -->
+${HTML(render_sidebar())}
+<!-- end: render sidebar -->
 
   <div id="content">
     <py:if test="defined('page')">

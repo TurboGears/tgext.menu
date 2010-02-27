@@ -85,16 +85,19 @@ def find_url(root, menuitem):
     if ':' in str(menuitem._url):
         return menuitem._url
     if not(menuitem.base):
-        n = menuitem.func.__name__
-        if n in root.__dict__:
-            if root.__dict__[n] is menuitem.func:
-                return '/%s' % (n)
-        for i in root.__dict__:
-            controller = root.__dict__[i]
-            if hasattr(controller, '_dispatch'):
-                v = find_url(controller.__class__, menuitem)
-                if v is not None:
-                    return '/%s%s' % (i, v)
+        if hasattr(menuitem.func, '__name__'):
+            n = menuitem.func.__name__
+            if n in root.__dict__:
+                if root.__dict__[n] is menuitem.func:
+                    return '/%s' % (n)
+            for i in root.__dict__:
+                controller = root.__dict__[i]
+                if hasattr(controller, '_dispatch'):
+                    v = find_url(controller.__class__, menuitem)
+                    if v is not None:
+                        return '/%s%s' % (i, v)
+        else:
+            return str(menuitem._url)
     else:
         for i in root.__dict__:
             controller = root.__dict__[i]
@@ -119,9 +122,6 @@ def register_callback_navbar(func):
 def register_callback_sidebar(func):
     register_callback(u'sidebar', func)
     
-def register_callback_sitemap(func):
-    register_callback(u'sitemap', func)
-    
 def deregister_callback(menuname, func):
     if menuname not in callbacks:
         return
@@ -137,9 +137,6 @@ def deregister_callback_navbar(func):
 def deregister_callback_sidebar(func):
     deregister_callback(u'sidebar', func)
     
-def deregister_callback_sitemap(func):
-    deregister_callback(u'sitemap', func)
-    
 
 shared_cache = shared_menu_cache()
-callbacks = {'navbar': [], 'sidebar': [], 'sitemap': []}
+callbacks = {'navbar': [], 'sidebar': []}

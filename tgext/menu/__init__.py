@@ -3,18 +3,18 @@ import sys
 from tg.configuration import Bunch
 from pylons import config
 
-from caches import register_callback, register_callback_navbar, register_callback_sidebar, register_callback_sitemap
-from caches import deregister_callback, deregister_callback_navbar, deregister_callback_sidebar, deregister_callback_sitemap
+from caches import register_callback, register_callback_navbar, register_callback_sidebar
+from caches import deregister_callback, deregister_callback_navbar, deregister_callback_sidebar
 from caches import entry
-from decorators import menu, navbar, sidebar, sitemap
-from functions import render_menu, render_navbar, render_sidebar, render_sitemap
-from functions import menu_append, navbar_append, sidebar_append, sitemap_append
-from functions import menu_remove, navbar_remove, sidebar_remove, sitemap_remove
+from decorators import menu, navbar, sidebar
+from functions import render_menu, render_navbar, render_sidebar
+from functions import menu_append, navbar_append, sidebar_append
+from functions import menu_remove, navbar_remove, sidebar_remove
 from functions import url_from_menu
 
-__all__ = ["menu", "navbar", "sidebar", "sitemap",
-           "menu_append", "navbar_append", "sidebar_append", "sitemap_append",
-           "menu_remove", "navbar_remove", "sidebar_remove", "sitemap_remove",
+__all__ = ["menu", "navbar", "sidebar",
+           "menu_append", "navbar_append", "sidebar_append",
+           "menu_remove", "navbar_remove", "sidebar_remove",
            "url_from_menu", "entry"]
 
 def menu_variable_provider():
@@ -23,7 +23,6 @@ def menu_variable_provider():
         render_menu = render_menu,
         render_navbar = render_navbar,
         render_sidebar = render_sidebar,
-        render_sitemap = render_sitemap
     )
     
     try:

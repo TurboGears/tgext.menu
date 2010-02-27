@@ -40,9 +40,6 @@ def navbar_append(path, extension=None, permission=None, url=None, base=None, ex
 def sidebar_append(path, extension=None, permission=None, url=None, base=None, extras={}):
     menu_append(path, u'sidebar', extension, permission, url, base, extras)
 
-def sitemap_append(path, extension=None, permission=None, url=None, base=None, extras={}):
-    menu_append(path, u'sitemap', extension, permission, url, base, extras)
-
 ##############################################################################
 ## 
 ##############################################################################
@@ -55,9 +52,6 @@ def navbar_remove(path):
 
 def sidebar_remove(path):
     menu_remove(path, u'sidebar')
-
-def sitemap_remove(path):
-    menu_remove(path, u'sitemap')
 
 ##############################################################################
 ## 
@@ -114,6 +108,3 @@ def render_navbar(vertical=False, active=None):
 def render_sidebar(vertical=False, active=None):
     return render_menu(u'sidebar', vertical, active)
 
-def render_sitemap(vertical=False):
-    raise NotImplementedError('render_sitemap: Not Yet Implemented')
-    return render_menu(u'sitemap', vertical)

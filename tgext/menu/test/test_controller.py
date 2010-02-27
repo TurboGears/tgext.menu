@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from tgext.menu.test.model import metadata, DBSession, User, Group, Permission
 from tgext.menu.caches import shared_cache, callbacks, deregister_callback_navbar
 from tgext.menu.test.model import Dictionary
-from tgext.menu import menu_variable_provider, url_from_menu
+from tgext.menu import menu_variable_provider, url_from_menu, sidebar_append, sidebar_remove
 from tgext.menu.util import init_resources
 
         
@@ -254,3 +254,9 @@ class TestMenuDecorator:
         url = url_from_menu('navbar', 'Non-Existant')
         assert url is None, 'Expected None and got "%s" when looking up "Non-Existant"'
         
+
+    def test_sidebar_tools(self):
+        sidebar_append('Add Sidebar', url='/')
+        sidebar_remove('Remove Sidebar')
+        pass
+    
