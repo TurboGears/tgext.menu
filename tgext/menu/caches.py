@@ -54,8 +54,6 @@ class shared_menu_cache(object):
                 return None
         else:
             return None
-        
-        return None
     
     def removeMenu(self, menuname):
         if menuname in self._menuitems:

@@ -188,6 +188,22 @@ rendered_admin_menu = """
 </div>
 """
 
+rendered_sidebar="""
+<div id="sidebar_div">
+    <ul id="sidebar" class="jd_menu">
+        <li class="first last"><a href="/index">TestHome on the side</a></li>
+    </ul>
+</div>
+"""
+
+rendered_sidebar_added="""
+<div id="sidebar_div">
+    <ul id="sidebar" class="jd_menu">
+        <li class="first"><a href="/">Add Sidebar</a></li>
+        <li class="last"><a href="/index">TestHome on the side</a></li>
+    </ul>
+</div>
+"""
 
 class TestMenuDecorator:
     def __init__(self, *args, **kargs):
@@ -197,6 +213,18 @@ class TestMenuDecorator:
         base_config['sa_auth']['dbsession'] = DBSession
         self.app = app_from_config(base_config)
             
+    def test_index_sidebar(self):
+        resp = self.app.get('/')
+        assert rendered_sidebar in resp, resp
+        
+    def test_sidebar_tools(self):
+        sidebar_append('Add Sidebar', url='/')
+        resp = self.app.get('/')
+        assert rendered_sidebar_added in resp, "Added not found:\n" + str(resp)
+        sidebar_remove('Add Sidebar')
+        resp = self.app.get('/')
+        assert rendered_sidebar in resp, "Added was still found:\n" + str(resp)
+
     def test_index_not_logged_in(self):
         resp = self.app.get('/')
         assert rendered_menu in resp, resp
@@ -254,9 +282,10 @@ class TestMenuDecorator:
         url = url_from_menu('navbar', 'Non-Existant')
         assert url is None, 'Expected None and got "%s" when looking up "Non-Existant"'
         
+    def test_get_entries(self):
+        resp = self.app.get('/')
+        assert shared_cache.getEntry('No Such Menu', 'No Such Path') is None
+        assert shared_cache.getEntry('navbar', 'No Such Path') is None
+        assert shared_cache.getEntry('navbar', 'TestHome') is not None
+            
 
-    def test_sidebar_tools(self):
-        sidebar_append('Add Sidebar', url='/')
-        sidebar_remove('Remove Sidebar')
-        pass
-    

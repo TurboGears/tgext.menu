@@ -5,7 +5,7 @@ import tgext.menu.test.model as model
 
 from repoze.what.predicates import Not, is_anonymous, has_permission
 
-from tgext.menu import navbar, navbar_append, navbar_remove, register_callback_navbar, entry, deregister_callback_navbar
+from tgext.menu import navbar, navbar_append, navbar_remove, register_callback_navbar, entry, deregister_callback_navbar, sidebar
 
 class NestedController(TGController):
     def __init__(self):
@@ -88,6 +88,7 @@ class RootController(TGController):
     
         
     @navbar('TestHome')
+    @sidebar('TestHome on the side')
     @expose('genshi:tgext.menu.test.templates.index')
     def index(self, *p, **kw):
         return dict(currpage='TestHome')
