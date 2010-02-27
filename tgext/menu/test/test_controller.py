@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from tgext.menu.test.model import metadata, DBSession, User, Group, Permission
 from tgext.menu.caches import shared_cache, callbacks, deregister_callback_navbar
 from tgext.menu.test.model import Dictionary
-from tgext.menu import menu_variable_provider, url_from_menu, sidebar_append, sidebar_remove
+from tgext.menu import menu_variable_provider, url_from_menu, sidebar_append, sidebar_remove, menu_append, menu_remove
 from tgext.menu.util import init_resources
 
         
@@ -287,5 +287,17 @@ class TestMenuDecorator:
         assert shared_cache.getEntry('No Such Menu', 'No Such Path') is None
         assert shared_cache.getEntry('navbar', 'No Such Path') is None
         assert shared_cache.getEntry('navbar', 'TestHome') is not None
-            
+    
+    def test_str_entry(self):
+        resp = self.app.get('/')
+        ret = shared_cache.getEntry('navbar', 'TestHome')
+        expected = "TestHome at /index"
+        assert str(ret) == expected, 'Expected "%s", and got "%s"' % (expected, ret)
+    
+    def test_make_remove_menu(self):
+        menu_append('Bogosity', 'Bogus')
+        assert len(shared_cache.getMenu('Bogus')) > 0, "Didn't find the menu 'Bogus'"
+        shared_cache.removeMenu('Bogus')
+        assert len(shared_cache.getMenu('Bogus')) == 0, "Found the menu 'Bogus'"
+        
 
