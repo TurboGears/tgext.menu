@@ -18,9 +18,13 @@ use_tw2 = False
 ##############################################################################
 ## 
 ##############################################################################
-def url_from_menu():
-    # @todo: make a function that will return the url for the given menu path
-    raise NotImplementedError('url_from_menu: Not Yet Implemented')
+def url_from_menu(menuname, menupath):
+    menu = shared_cache.getMenu(menuname)
+    menupath = [x.strip() for x in menupath.split('||')]
+    for item in menu:
+        if menu[item]._mpath == menupath:
+            return menu[item]._url
+    return None
 
 ##############################################################################
 ## 

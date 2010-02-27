@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from tgext.menu.test.model import metadata, DBSession, User, Group, Permission
 from tgext.menu.caches import shared_cache, callbacks, deregister_callback_navbar
 from tgext.menu.test.model import Dictionary
-from tgext.menu import menu_variable_provider
+from tgext.menu import menu_variable_provider, url_from_menu
 from tgext.menu.util import init_resources
 
         
@@ -248,3 +248,9 @@ class TestMenuDecorator:
         assert 'jquery.jdMenu.js' in resp, resp
         config['use_toscawidgets2'] = oldval
 
+    def test_url_from_menu(self):
+        url = url_from_menu('navbar', 'TestHome')
+        assert url=='/index', 'Expected "/index" and got "%s" when looking up "TestHome"'
+        url = url_from_menu('navbar', 'Non-Existant')
+        assert url is None, 'Expected None and got "%s" when looking up "Non-Existant"'
+        
