@@ -8,7 +8,9 @@ from sqlalchemy.orm import sessionmaker
 
 
 from tgext.menu.test.model import metadata, DBSession, User, Group, Permission
-from tgext.menu.caches import shared_cache, callbacks, deregister_callback_navbar
+from tgext.menu.caches import shared_cache, callbacks
+from tgext.menu.caches import register_callback, register_callback_navbar, register_callback_sidebar
+from tgext.menu.caches import deregister_callback, deregister_callback_navbar, deregister_callback_sidebar
 from tgext.menu.test.model import Dictionary
 from tgext.menu import menu_variable_provider, url_from_menu, sidebar_append, sidebar_remove, menu_append, menu_remove
 from tgext.menu.util import init_resources
@@ -300,4 +302,24 @@ class TestMenuDecorator:
         shared_cache.removeMenu('Bogus')
         assert len(shared_cache.getMenu('Bogus')) == 0, "Found the menu 'Bogus'"
         
+    def callmeback(self):
+        return None
+    
+    def test_callbacks(self):
+        register_callback('bogus', self.callmeback)
+        assert len(callbacks['bogus']) > 0
+        deregister_callback('bogus', self.callmeback)
+        assert len(callbacks['bogus']) == 0
+        
+        register_callback_navbar(self.callmeback)
+        assert len(callbacks['navbar']) > 0
+        deregister_callback_navbar(self.callmeback)
+        assert len(callbacks['navbar']) == 0
 
+        register_callback_sidebar(self.callmeback)
+        assert len(callbacks['sidebar']) > 0
+        deregister_callback_sidebar(self.callmeback)
+        assert len(callbacks['sidebar']) == 0
+
+        
+    
