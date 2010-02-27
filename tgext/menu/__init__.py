@@ -15,6 +15,9 @@ from functions import url_from_menu
 __all__ = ["menu", "navbar", "sidebar",
            "menu_append", "navbar_append", "sidebar_append",
            "menu_remove", "navbar_remove", "sidebar_remove",
+           "render_menu", "render_navbar", "render_sidebar",
+           "register_callback", "register_callback_navbar", "register_callback_sidebar",
+           "deregister_callback", "deregister_callback_navbar", "deregister_callback_sidebar",
            "url_from_menu", "entry"]
 
 def menu_variable_provider():

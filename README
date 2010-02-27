@@ -80,17 +80,23 @@ In your controller code, you will be using one of three decorators:
 * @sidebar('menu path')
 * @menu('menu path', 'menu name')
 
+Using @menu will be rare. Normally, you will only be using @navbar or
+@sidebar.
+
+=== Appending and Removing Entries ===
+
 In addition, you may be using one of six functions in your code:
 
-* menu_append('menu path')
+* menu_append('menu path', 'menu name')
 * navbar_append('menu path')
 * sidebar_append('menu path')
-* menu_remove('menu path')
+* menu_remove('menu path', 'menu name')
 * navbar_remove('menu path')
 * sidebar_remove('menu path')
 
 The above functions are meant to allow you to easily add and remove menu
 entries programmatically.
+
 
 The decorators and methods all take a common set of parameters:
 
@@ -98,6 +104,7 @@ The decorators and methods all take a common set of parameters:
 * permission
 * url
 * extension
+* extras
 
 menu path is simply a string of entries, separated by ||, indicating
 where this particular entry lives in the menu hierarchy. An example
@@ -115,14 +122,15 @@ absolute url (i.e.: it has a ":" in it somewhere).
 extension is the file extension to put at the end. The dot will be supplied
 for you, so you would only need to add "js" for javascript, for instance.
 
+extras is a dictionary of extra attributes to place on the <li> tag
+which contains the actual <a> tag for this menu item. All extras will
+be placed as is, no filtering or escaping of any sort will be done.
+
 If you use the @menu decorator or menu_append or menu_remove, you will need to
 specify which menu this particular menu entry belongs to. This will allow you
 to provide a specific menu for a specific section of your application. An
 example would be if you are writing up an admin module, and want to provide an
 admin-only menu.
-
-Using @menu will be rare. Normally, you will only be using @navbar or
-@sidebar.
 
 Finally, for menu_append, navbar_append, and sidebar_append, you *must* supply
 one additional parameter named "base". "base" is the class instance that is
@@ -131,16 +139,73 @@ you know of another class instance that can be found in the hierarchy, you can
 use that instead (of course, if that is appropriate to do). Failure to supply
 "base" is an error, and will result in an exception being thrown.
 
+=== url_from_menu ===
+
+This function allows you to locate the URL that a given menu path
+has. This will be useful, for example, in templates, especially in
+other TurboGears extensions. For instance, if you have the following
+controller code:
+
+{{{
+#!python
+from tg import require, TGController
+from tgext.menu import navbar
+
+class MyController(TGController):
+      @navbar('FooBaz')
+      def foobaz(self, *p, **kw):
+      	  return {}
+}}}
+
+Then, in your template, you can place this code:
+
+{{{
+#!genshi
+<a href="${tg.url(url_from_menu('navbar', 'FooBaz'))}">Go To FooBaz!</a>
+}}}
+
+And the actual link to FooBaz will be rendered at that location,
+regardless of where in your controller hierarchy that particular
+controller was mounted.
+
+=== Render The Menu ===
+
 In your template, you will need to render the menu. This follows a
 similar pattern from above. You will have the following methods
 available to you in your template:
 
-* render_navbar(vertical=False)
-* render_sidebar(vertical=False)
-* render_menu(menu_name, vertical=False)
+* render_navbar(vertical=False, active=None)
+* render_sidebar(vertical=False, active=None)
+* render_menu(menu_name, vertical=False, active=None)
 
 The "vertical" parameter is used to tell jdMenu that this should be a vertical
 menu.
+
+The "active" parameter is used to tell tgext.menu the menu path for
+the currently rendered page. When this link is rendered in the menus,
+it will be given a CSS class of active. Note that if you leave it as
+None, then no link will ever be given that CSS class.
+
+=== User Defined Callbacks ===
+
+Finally, you may register callbacks from the menu system. These
+callbacks will call your methods and add the results of those methods
+into the user's menus. Note that this happens on every page request,
+so you may have a callback that adds items depending on the parameters
+of the request (the user, the group the user is in, etc). Those
+callback registration functions follow a similar pattern as the
+append/remove functions, and are named as follows:
+
+* register_callback('menu name', function)
+* register_callback_navbar(function)
+* register_callback_sidebar(function)
+* deregister_callback('menu name', function)
+* deregister_callback_navbar(function)
+* deregister_callback_sidebar(function)
+
+Any given callback is expected to return a list of
+tgext.menu.entry. This class uses the same parameters that the
+decorators do, with the same names.
 
 == Configuration Options ==
 
@@ -204,13 +269,43 @@ the value 999999. 'Foo' goes first.
 Adding the code for rendering a Google sitemap should be relatively
 easy. However, it has not been done as yet.
 
+=== @require ===
+
+This isn't so much a drawback as it is an issue with getting
+permissions to be honored properly by tgext.menu. As it stands right
+now, tgext.menu honors the allow_only attribute. However, it cannot
+honor the @require decorator without some additional work on your
+part.
+
+The reason for this is because @require is actually a function in its
+own right. It takes a repoze.what Predicate, validates that the
+current user passes the Predicate check, and then calls the wrapped
+method. Therefore, when TurboGears calls your method, it is *actually*
+calling the require function, which validates the security, then calls
+your code, which returns data back up the stack to TurboGears.
+
+By doing this, the Predicate becomes a local variable inside of
+@require that cannot be accessed by outside code. The only way to
+ensure that tgext.menu will properly honor such predicates is to do
+something like this:
+
+{{{
+#!python
+from tg import require, TGController
+from repoze.what.predicates import Not, is_anonymous
+from tgext.menu import navbar
+
+class MyController(TGController):
+      is_not_anon = Not(is_anonymous())
+
+      @require(is_not_anon)
+      @navbar('FooBaz', permission=is_not_anon)
+      def foobaz(self, *p, **kw):
+      	  return {}
+}}}
+
+I do wish there were a better way, but it just doesn't exist yet.
 
 == Doc To-Do Items ==
 
- * Document how to use call backs
- * Document how to get a specific link marked with the CSS class active in
-   the rendered output
- * Document how to add arbitrary attributes to a menu item
- * Document why '@require' cannot be honored automatically, and the
-   workaround for it
  * Document the code internally
