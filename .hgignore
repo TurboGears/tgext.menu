@@ -7,3 +7,4 @@ build/*
 PasteScript-*.egg/*
 Paste-*.egg/*
 PasteDeploy-*.egg/*
+.coverage

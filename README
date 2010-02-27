@@ -153,7 +153,7 @@ base_config.tgext_menu = {}
 base_config.tgext_menu['inject_css'] = True
 }}}
 
-This has two possible parameters in it: inject_css and sortorder.
+This has three possible parameters in it: inject_css, inject_js and sortorder.
 
 === inject_css : default False ===
 
@@ -201,8 +201,16 @@ the value 999999. 'Foo' goes first.
 
 == Drawbacks ==
 
-@require and allow_only permissions are not yet honored. As such, permissions
-must be manually passed in to @menu and friends still.
+Adding the code for rendering a Google sitemap should be relatively
+easy. However, it has not been done as yet.
 
-The currently active page cannot be highlighted as yet. The CSS tags are not
-yet set up for this.
+
+== Doc To-Do Items ==
+
+ * Document how to use call backs
+ * Document how to get a specific link marked with the CSS class active in
+   the rendered output
+ * Document how to add arbitrary attributes to a menu item
+ * Document why '@require' cannot be honored automatically, and the
+   workaround for it
+ * Document the code internally
