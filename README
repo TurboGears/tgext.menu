@@ -14,9 +14,25 @@ any of these cases.
 
 When you use tgext.menu, you need to do the following three steps:
 
-1. Add it to your project. This is accomplished by modifying your setup.py. Add "tgext.menu" to your **install_requires** list. 
+1. Add it to your project. This is accomplished by modifying your setup.py. Add "tgext.menu" to your **install_requires** list.
 
-2. Add it to your master template. This step varies depending on whether you are using Mako or Genshi for your templating engine. In either case, where you have the code to render your navigation bar, put this code:
+
+2. Get JQuery installed. tgext.menu supports working with both ToscaWidgets 1 and 2. You will need to manually choose and install the correct jquery for your application. If you are using ToscaWidgets1, then just run this command:
+
+{{{
+easy_install tw.jquery
+}}}
+
+If you are using ToscaWidgets2, you will need to do the following:
+
+{{{
+easy_install tw2.forms tw2.core
+hg clone https://bitbucket.org/toscawidgets/tw2jquery
+cd tw2jquery
+python setup.py develop
+}}}
+
+3. Add it to your master template. This step varies depending on whether you are using Mako or Genshi for your templating engine. In either case, where you have the code to render your navigation bar, put this code:
 
 **Mako**
 
@@ -32,7 +48,7 @@ ${render_navbar()|n}
 ${HTML(render_navbar())}
 }}}
 
-3. Add tgext.menu into your controllers. Place this code in any controllers that will be using tgext.menu:
+4. Add tgext.menu into your controllers. Place this code in any controllers that will be using tgext.menu:
 
 {{{
 #!python
@@ -145,7 +161,7 @@ you know of another class instance that can be found in the hierarchy, you can
 use that instead (of course, if that is appropriate to do). Failure to supply
 "base" is an error, and will result in an exception being thrown.
 
-=== url_from_menu ===
+=== url_from_menu and get_entry ===
 
 This function allows you to locate the URL that a given menu path
 has. This will be useful, for example, in templates, especially in
@@ -173,6 +189,12 @@ Then, in your template, you can place this code:
 And the actual link to FooBaz will be rendered at that location,
 regardless of where in your controller hierarchy that particular
 controller was mounted.
+
+
+get_entry will allow you to retrieve the menu object used to store the
+data about the menu entry. This will allow you to do such things as
+update extra attributes, permissions, and the like. It uses the same
+parameters as url_from_menu.
 
 === Render The Menu ===
 

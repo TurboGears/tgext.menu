@@ -8,7 +8,7 @@ except ImportError:
 
 setup(
     name='tgext.menu',
-    version='0.6',
+    version='1.0b1',
     description='Automatic menu/navbar/sidebar generation extension for TurboGears',
     author='Michael Pedersen',
     author_email='m.pedersen@icelus.org',
