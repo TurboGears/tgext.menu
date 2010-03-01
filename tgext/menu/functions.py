@@ -16,7 +16,7 @@ jquery_bgiframe_js = jquery_dimensions_js = jquery_jdmenu_js = jquery_js = jquer
 use_tw2 = False
 
 ##############################################################################
-## 
+## Section: url_from_menu and get_entry
 ##############################################################################
 def url_from_menu(menuname, menupath):
     menu = shared_cache.getMenu(menuname)
@@ -26,8 +26,11 @@ def url_from_menu(menuname, menupath):
             return menu[item]._url
     return None
 
+def get_entry(menuname, menupath):
+    return shared_cache.getEntry(menuname, menupath)
+
 ##############################################################################
-## 
+## Section: Functions to append menu entries onto a menu
 ##############################################################################
 def menu_append(path, name, extension=None, permission=None, url=None, base=None, extras={}):
     item = entry(path, name, extension, permission, url, extras)
@@ -41,7 +44,7 @@ def sidebar_append(path, extension=None, permission=None, url=None, base=None, e
     menu_append(path, u'sidebar', extension, permission, url, base, extras)
 
 ##############################################################################
-## 
+## Section: Functions to remove menu entries from a menu
 ##############################################################################
 def menu_remove(path, name):
     item = entry(path, name, None, None, None)
@@ -54,7 +57,8 @@ def sidebar_remove(path):
     menu_remove(path, u'sidebar')
 
 ##############################################################################
-## 
+## Section: Do final prep work to render a menu, and then call Mako to do the
+## actual rendering
 ##############################################################################
 def render_menu(menuname, vertical=False, active=None):
     global jquery_bgiframe_js, jquery_dimensions_js, jquery_jdmenu_js, jquery_js, jquery_position_js, jquery_jdmenu_css, sortorder, use_tw2

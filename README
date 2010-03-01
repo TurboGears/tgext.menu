@@ -126,6 +126,12 @@ extras is a dictionary of extra attributes to place on the <li> tag
 which contains the actual <a> tag for this menu item. All extras will
 be placed as is, no filtering or escaping of any sort will be done.
 
+Note that one "special" tag exists: extratext. This is extra text that
+will be rendered after the link. This will allow you to place a
+comment after the link and before the next menu item. For instance,
+this can be used to have a sidebar with links and descriptions on
+those links.
+
 If you use the @menu decorator or menu_append or menu_remove, you will need to
 specify which menu this particular menu entry belongs to. This will allow you
 to provide a specific menu for a specific section of your application. An

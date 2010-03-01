@@ -9,6 +9,11 @@ from tg.controllers import TGController
 rootcon = None
 
 class entry(object):
+    """
+    This class contains all of the pieces of information about a given menu
+    entry. It is the only public portion of this particular file. Everything
+    else in here is private, and should not be used by any external code.
+    """
     def __init__(self, path, name, extension, permission, url, extras={}):
         self._path = path
         self._mpath = [x.strip() for x in path.split('||')]
@@ -22,11 +27,20 @@ class entry(object):
         
         if 'class' not in self.extras:
             self.extras['class'] = []
+            
+        if not(hasattr(self.extras['class'], 'append')):
+            self.extras['class'] = [self.extras['class'],]
         
     def __str__(self):
         return '%s at %s' % (str(self._path), str(self._url))
 
+
 class shared_menu_cache(object):
+    """
+    This uses the Borg pattern to ensure a single menu cache across all
+    requests. It completely encapsulates the shared menu cache, and there
+    should be absolutely no reason to access the shared state directly.
+    """
     __shared_state = {}
     def __init__(self):
         self.__dict__ = self.__shared_state
@@ -80,6 +94,16 @@ class shared_menu_cache(object):
 
 
 def find_url(root, menuitem):
+    """
+    This function is fairly complex, similar to permission_met. However, the
+    goal is different: This function starts at the root of the menu tree,
+    looking for a given function or class, so that it can return the path for
+    that class starting at the root. The one exception is that it returns
+    right away if it finds a ':' in the name, as it assumes an absolute URL.
+    
+    This method is recursive, so be aware of that as you trace through the
+    code.
+    """
     if ':' in str(menuitem._url):
         return menuitem._url
     if not(menuitem.base):
@@ -106,6 +130,10 @@ def find_url(root, menuitem):
                 if v is not None:
                     return '/%s%s' %(i, v)
     return None
+
+##############################################################################
+## Section: Functions to register and de-register user defined callbacks
+##############################################################################
 
 def register_callback(menuname, func):
     if menuname not in callbacks:
@@ -135,6 +163,10 @@ def deregister_callback_navbar(func):
 def deregister_callback_sidebar(func):
     deregister_callback(u'sidebar', func)
     
+##############################################################################
+## Section: Shared state variables, used to hold the menus and user-defined
+## callbacks.
+##############################################################################
 
 shared_cache = shared_menu_cache()
 callbacks = {'navbar': [], 'sidebar': []}

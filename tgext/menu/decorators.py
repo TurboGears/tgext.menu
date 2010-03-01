@@ -1,6 +1,9 @@
 import sys
 from caches import shared_cache, entry
 
+##############################################################################
+## Section: The decorator classes
+##############################################################################
 class menu(object):
     def __init__(self, path, name, extension='html', permission=None, url=None, extras={}):
         self.item = entry(path, name, extension, permission, url, extras)

@@ -21,6 +21,17 @@ sortorder = {}
 rootcon = None
 
 class OutputEntry(object):
+    """
+    An internal class, used to represent a single entry's information that is
+    necessary to render it.
+    
+    This class is used instead of the list method that was present in earlier
+    revisions as this creates a tree structure from the list data. The result
+    is something that is easy to display, easy to sort, and easy to work with
+    at display time. Note that the list representation is left alone earlier
+    as a way to make life easier during menu manipulation time. The two
+    classes complement each other.
+    """
     def __init__(self, name, href=None, extras={}):
         self.children = []
         self.href = href
@@ -48,6 +59,11 @@ class OutputEntry(object):
         return self.name == othername
 
 def init_resources():
+    """
+    This method is reponsible for configuring the JSLink and CSSLink widgets
+    as necessary. It automatically detects and uses ToscaWidgets 2 when
+    available and possible. Outside of that, it uses ToscaWidgets 1.
+    """
     global use_tw2, jquery_bgiframe_js, jquery_dimensions_js, jquery_position_js, jquery_jdmenu_js, jquery_jdmenu_css, jquery_js
     global sortorder
 
@@ -105,6 +121,11 @@ def init_resources():
     tgext.menu.functions.use_tw2 = use_tw2
 
 def sort_entry(ent1, ent2):
+    """
+    A simple comparison function. It uses the sort order specified in the
+    application's configuration, compares the menu entries, and returns the
+    correct value depending on the configuration.
+    """
     global sortorder
     idx = 0
     while idx < len(ent1._mpath) and idx < len(ent2._mpath):
@@ -116,6 +137,15 @@ def sort_entry(ent1, ent2):
     return cmp(ent1._mpath, ent2._mpath)
 
 def permission_met(menu):
+    """
+    This is one of the more complicated methods. It works recursively.
+    
+    When called, it is given the root of the controller hierarchy. It looks
+    for the path to the menu entry, and checks everything that it can along
+    the way: allow_only on all controllers, and the (optional) permission on
+    the method itself (which must be given to the @menu decorator or
+    menu_append, see the README for details why and a workaround).
+    """
     global rootcon
     retval = True
     
