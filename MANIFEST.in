@@ -1,6 +1,8 @@
 include README
 include LICENSE
 include tgext/menu/templates/*.mak
+include tgext/menu/static/js/*.js
+include tgext/menu/static/css/*.css
 recursive-exclude tgext/menu/test *
 global-exclude *.pyc
 global-exclude .DS_Store

@@ -6,6 +6,8 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
+import os
+
 setup(
     name='tgext.menu',
     version='1.0b1',
@@ -29,6 +31,6 @@ setup(
             ('templates/**.mako', 'mako', None),
             ('templates/**.html', 'genshi', None),
             ('public/**', 'ignore', None)]},
-    package_data={'tgext.menu' : ['static/*', 'templates/*'] },
-    dependency_links=['http://www.turbogears.org/2.1/downloads/current/index']
+    dependency_links=['http://www.turbogears.org/2.1/downloads/current/index'],
+    zip_safe=False
 )
