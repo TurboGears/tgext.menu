@@ -73,7 +73,7 @@ def menu_variable_provider():
 
     return menu_vars
 
-app_variable_provider = config.get('variable_provider', None)
+app_variable_provider = config.get('tgext_menu_sub_variable_provider', None)
 config.update(Bunch(
     variable_provider = menu_variable_provider
     ))

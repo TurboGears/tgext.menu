@@ -32,7 +32,22 @@ cd tw2jquery
 python setup.py develop
 }}}
 
-3. Add it to your master template. This step varies depending on whether you are using Mako or Genshi for your templating engine. In either case, where you have the code to render your navigation bar, put this code:
+3. Update your project/config/app_cfg.py. If you already have a line like this:
+
+{{{
+base_config.variable_provider = my_function
+}}}
+
+Change the {{{variable_provider}}} part to {{{tgext_menu_sub_variable_provider}}}
+
+4. Add the following lines to project/config/app_cfg.py at the bottom of the file.
+
+{{{
+import tgext.menu
+base_config.variable_provider = tgext.menu.menu_variable_provider
+}}}
+
+5. Add it to your master template. This step varies depending on whether you are using Mako or Genshi for your templating engine. In either case, where you have the code to render your navigation bar, put this code:
 
 **Mako**
 
@@ -48,7 +63,7 @@ ${render_navbar()|n}
 ${HTML(render_navbar())}
 }}}
 
-4. Add tgext.menu into your controllers. Place this code in any controllers that will be using tgext.menu:
+6. Add tgext.menu into your controllers. Place this code in any controllers that will be using tgext.menu:
 
 {{{
 #!python
