@@ -10,7 +10,7 @@ import os
 
 setup(
     name='tgext.menu',
-    version='1.0b1',
+    version='1.0b2',
     description='Automatic menu/navbar/sidebar generation extension for TurboGears',
     author='Michael Pedersen',
     author_email='m.pedersen@icelus.org',
