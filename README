@@ -136,6 +136,8 @@ The decorators and methods all take a common set of parameters:
 * url
 * extension
 * extras
+* sortorder
+* right
 
 menu path is simply a string of entries, separated by ||, indicating
 where this particular entry lives in the menu hierarchy. An example
@@ -162,6 +164,12 @@ will be rendered after the link. This will allow you to place a
 comment after the link and before the next menu item. For instance,
 this can be used to have a sidebar with links and descriptions on
 those links.
+
+sortorder is the value of this menu item's sortorder. See "sortorder" under
+"Configuration Options" (below) for details on how to use this.
+
+right is a shortcut for adding the HTML class "right" to the menu item. This
+is just a boolean value.
 
 If you use the @menu decorator or menu_append or menu_remove, you will need to
 specify which menu this particular menu entry belongs to. This will allow you
