@@ -88,3 +88,6 @@ ul.jd_menu li.jdm_active {
 	border-top: 1px solid #9CF;
 	
 }
+ul.jd_menu li.right{
+	float: right;
+}

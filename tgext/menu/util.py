@@ -129,8 +129,8 @@ def sort_entry(ent1, ent2):
     global sortorder
     idx = 0
     while idx < len(ent1._mpath) and idx < len(ent2._mpath):
-        val1 = sortorder.get(ent1._mpath[idx], 999999)
-        val2 = sortorder.get(ent2._mpath[idx], 999999)
+        val1 = sortorder.get(ent1._mpath[idx], ent1.sortorder)
+        val2 = sortorder.get(ent2._mpath[idx], ent2.sortorder)
         if val1 != val2:
             return cmp(val1, val2)
         idx += 1

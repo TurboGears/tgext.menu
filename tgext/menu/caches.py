@@ -14,7 +14,7 @@ class entry(object):
     entry. It is the only public portion of this particular file. Everything
     else in here is private, and should not be used by any external code.
     """
-    def __init__(self, path, name, extension, permission, url, extras={}):
+    def __init__(self, path, name, extension, permission, url, extras={}, sortorder=999999, right=False):
         self._path = path
         self._mpath = [x.strip() for x in path.split('||')]
         self._name = name
@@ -24,12 +24,15 @@ class entry(object):
         self.func = None
         self.base = None
         self.extras = deepcopy(extras)
+        self.sortorder = sortorder
         
         if 'class' not in self.extras:
             self.extras['class'] = []
             
         if not(hasattr(self.extras['class'], 'append')):
             self.extras['class'] = [self.extras['class'],]
+        if right:            
+            self.extras['class'].append('right')
         
     def __str__(self):
         return '%s at %s' % (str(self._path), str(self._url))

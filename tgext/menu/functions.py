@@ -32,16 +32,16 @@ def get_entry(menuname, menupath):
 ##############################################################################
 ## Section: Functions to append menu entries onto a menu
 ##############################################################################
-def menu_append(path, name, extension=None, permission=None, url=None, base=None, extras={}):
-    item = entry(path, name, extension, permission, url, extras)
+def menu_append(path, name, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False):
+    item = entry(path, name, extension, permission, url, extras, sortorder, right)
     item.base = base
     shared_cache.addEntry(item)
 
-def navbar_append(path, extension=None, permission=None, url=None, base=None, extras={}):
-    menu_append(path, u'navbar', extension, permission, url, base, extras)
+def navbar_append(path, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False):
+    menu_append(path, u'navbar', extension, permission, url, base, extras, sortorder, right)
 
-def sidebar_append(path, extension=None, permission=None, url=None, base=None, extras={}):
-    menu_append(path, u'sidebar', extension, permission, url, base, extras)
+def sidebar_append(path, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False):
+    menu_append(path, u'sidebar', extension, permission, url, base, extras, sortorder, right)
 
 ##############################################################################
 ## Section: Functions to remove menu entries from a menu
