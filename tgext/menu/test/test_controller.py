@@ -265,7 +265,7 @@ class TestMenuDecorator:
         config['use_toscawidgets2'] = False
         init_resources()
         resp = self.app.get('/')
-        assert 'tw.jquery.base/static/javascript/jquery-1.3.2.js' in resp, resp
+        assert 'tw.jquery.base/static/javascript/jquery-1.4.2.js' in resp, resp
         assert 'jquery.jdMenu.js' in resp, resp
         config['use_toscawidgets2'] = oldval
 
@@ -274,7 +274,7 @@ class TestMenuDecorator:
         config['use_toscawidgets2'] = True
         init_resources()
         resp = self.app.get('/')
-        assert 'tw2.jquery/static/jquery/1.3.2/jquery.js' in resp, resp
+        assert 'tw2.jquery/static/jquery/1.4.2/jquery.js' in resp, resp
         assert 'jquery.jdMenu.js' in resp, resp
         config['use_toscawidgets2'] = oldval
 
