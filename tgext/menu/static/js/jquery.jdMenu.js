@@ -113,6 +113,7 @@ $(function() {
 				})
 			.end();
 		if ( animate === undefined ) {
+			if(!ul.hasClass('jd_menu'))
 			ul.hide()
 		} else {
 			animate.apply( ul[0], [false] );
