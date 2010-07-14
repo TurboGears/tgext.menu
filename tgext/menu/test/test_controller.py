@@ -140,8 +140,8 @@ rendered_menu = """
                 <li class="last"><a href="/sub1/foo">Foo</a></li>
               </ul>
               </li>
-            <li><a href="/bar">Bar</a></li>
-            <li class="last"><a href="/foo">Foo</a></li>
+            <li id="foo_2"><a href="/bar">Bar</a></li>
+            <li class="last" id="foo_1"><a href="/foo">Foo</a></li>
           </ul>
           </li>
         <li style="font-color: black"><a href="/sub1/styleme">Style Me</a> Right now!</li>
@@ -179,8 +179,8 @@ rendered_admin_menu = """
                 <li class="last"><a href="/sub1/foo">Foo</a></li>
               </ul>
               </li>
-            <li><a href="/bar">Bar</a></li>
-            <li class="last"><a href="/foo">Foo</a></li>
+            <li id="foo_2"><a href="/bar">Bar</a></li>
+            <li class="last" id="foo_1"><a href="/foo">Foo</a></li>
           </ul>
           </li>
         <li><a href="/logout">Logout</a></li>

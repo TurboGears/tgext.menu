@@ -93,12 +93,12 @@ class RootController(TGController):
     def index(self, *p, **kw):
         return dict(currpage='TestHome')
 
-    @navbar('Foo Spot || Foo')
+    @navbar('Foo Spot || Foo', extras={'id':'foo_1'})
     @expose('genshi:tgext.menu.test.templates.index')
     def foo(self, *p, **kw):
         return dict()
 
-    @navbar('Foo Spot || Bar')
+    @navbar('Foo Spot || Bar', extras={'id':'foo_2'})
     @expose('genshi:tgext.menu.test.templates.index')
     def bar(self, *p, **kw):
         return dict()
