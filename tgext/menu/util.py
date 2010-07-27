@@ -32,27 +32,28 @@ class OutputEntry(object):
     as a way to make life easier during menu manipulation time. The two
     classes complement each other.
     """
-    def __init__(self, name, href=None, extras={}):
+    def __init__(self, name, href=None, extras={}, icon=None):
         self.children = []
         self.href = href
         self.name = name
         self.extras = deepcopy(extras)
+        self.icon = icon
         
         if 'class' not in self.extras:
             self.extras['class'] = []
 
-    def appendPath(self, name, href, extras={}):
+    def appendPath(self, name, href, extras={}, icon=None):
         # name is a list of paths, i.e.: ['Foo Spot', 'Bar']
         if len(name) > 1:
             try:
                 idx = self.children.index(name[0])
             except ValueError:
-                child = OutputEntry(name[0], extras=extras)
+                child = OutputEntry(name[0], extras=extras, icon=icon)
                 self.children.append(child)
                 idx = len(self.children)-1
-            self.children[idx].appendPath(name[1:], href, extras)
+            self.children[idx].appendPath(name[1:], href, extras, icon)
         else:
-            child = OutputEntry(name[0], href, extras=extras)
+            child = OutputEntry(name[0], href, extras=extras, icon=icon)
             self.children.append(child)
     
     def __eq__(self, othername):

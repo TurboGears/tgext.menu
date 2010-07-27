@@ -32,16 +32,16 @@ def get_entry(menuname, menupath):
 ##############################################################################
 ## Section: Functions to append menu entries onto a menu
 ##############################################################################
-def menu_append(path, name, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False):
-    item = entry(path, name, extension, permission, url, extras, sortorder, right)
+def menu_append(path, name, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False, icon=None):
+    item = entry(path, name, extension, permission, url, extras, sortorder, right, icon)
     item.base = base
     shared_cache.addEntry(item)
 
-def navbar_append(path, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False):
-    menu_append(path, u'navbar', extension, permission, url, base, extras, sortorder, right)
+def navbar_append(path, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False, icon=None):
+    menu_append(path, u'navbar', extension, permission, url, base, extras, sortorder, right, icon)
 
-def sidebar_append(path, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False):
-    menu_append(path, u'sidebar', extension, permission, url, base, extras, sortorder, right)
+def sidebar_append(path, extension=None, permission=None, url=None, base=None, extras={}, sortorder=999999, right=False, icon=None):
+    menu_append(path, u'sidebar', extension, permission, url, base, extras, sortorder, right, icon)
 
 ##############################################################################
 ## Section: Functions to remove menu entries from a menu
@@ -103,7 +103,7 @@ def render_menu(menuname, vertical=False, active=None):
             extras['class'].append('active')
         else:
             extras = menuitem.extras
-        menutree.appendPath(menuitem._mpath, str(menuitem._url), extras)
+        menutree.appendPath(menuitem._mpath, str(menuitem._url), extras, menuitem.icon)
     return divmenu.render(menulist=menutree, name=menuname, vertical_menu=vertical)
 
 def render_navbar(vertical=False, active=None):

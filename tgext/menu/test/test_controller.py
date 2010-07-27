@@ -116,11 +116,11 @@ def setup():
 rendered_menu = """
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
-        <li class="active first"><a href="/index">TestHome</a></li>
+        <li class="active first"><img src="navdeco.png" /><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
             <li class="first"><a href="/sub1/nested/jsonify.json">Get Json</a></li>
-            <li><a href="http://www.google.com/">Google</a></li>
+            <li><img src="navfunc.png" /><a href="http://www.google.com/">Google</a></li>
             <li><a href="/sub1/index">Sub 1</a>
               <ul class="navbar_level2">
                 <li class="first last"><a href="/sub1/nested/index">Nested 1</a></li>
@@ -159,11 +159,11 @@ rendered_menu = """
 rendered_admin_menu = """
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
-        <li class="active first"><a href="/index">TestHome</a></li>
+        <li class="active first"><img src="navdeco.png" /><a href="/index">TestHome</a></li>
         <li>Sub
           <ul class="navbar_level1">
             <li class="first"><a href="/sub1/nested/jsonify.json">Get Json</a></li>
-            <li><a href="http://www.google.com/">Google</a></li>
+            <li><img src="navfunc.png" /><a href="http://www.google.com/">Google</a></li>
             <li><a href="/sub1/index">Sub 1</a>
               <ul class="navbar_level2">
                 <li class="first last"><a href="/sub1/nested/index">Nested 1</a></li>
@@ -205,7 +205,7 @@ rendered_admin_menu = """
 rendered_sidebar="""
 <div id="sidebar_div">
     <ul id="sidebar" class="jd_menu">
-        <li class="first last"><a href="/index">TestHome on the side</a></li>
+        <li class="first last"><img src="sidedeco.png" /><a href="/index">TestHome on the side</a></li>
     </ul>
 </div>
 """
@@ -213,8 +213,8 @@ rendered_sidebar="""
 rendered_sidebar_added="""
 <div id="sidebar_div">
     <ul id="sidebar" class="jd_menu">
-        <li class="first"><a href="/">Add Sidebar</a></li>
-        <li class="last"><a href="/index">TestHome on the side</a></li>
+        <li class="first"><img src="sidefunc.png" /><a href="/">Add Sidebar</a></li>
+        <li class="last"><img src="sidedeco.png" /><a href="/index">TestHome on the side</a></li>
     </ul>
 </div>
 """
@@ -232,7 +232,7 @@ class TestMenuDecorator:
         assert rendered_sidebar in resp, resp
         
     def test_sidebar_tools(self):
-        sidebar_append('Add Sidebar', url='/')
+        sidebar_append('Add Sidebar', url='/', icon="sidefunc.png")
         resp = self.app.get('/')
         assert rendered_sidebar_added in resp, "Added not found:\n" + str(resp)
         sidebar_remove('Add Sidebar')

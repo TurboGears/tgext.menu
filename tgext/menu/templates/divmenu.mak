@@ -23,8 +23,12 @@
             href = '<a href="%s">%s</a>' % (url(mlist.href), escape(mlist.name, True))
         else:
             href = escape(mlist.name, True)
+        if mlist.icon:
+            imgtext = '<img src="%s" />' % (mlist.icon)
+        else:
+            imgtext = ''
         if len(mlist.children) == 0:
-            context.write('%s<li%s%s>%s%s</li>\n' % (tabs, htmlclass, attrstring, href, extratext))
+            context.write('%s<li%s%s>%s%s%s</li>\n' % (tabs, htmlclass, attrstring, imgtext, href, extratext))
         else:
             context.write('%s<li%s>%s%s\n%s  <ul class="%s_level%s">\n' % (tabs, htmlclass, href, extratext, tabs, name, level+1))
             for child in mlist.children:

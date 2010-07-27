@@ -10,7 +10,7 @@ from tgext.menu import navbar, navbar_append, navbar_remove, register_callback_n
 class NestedController(TGController):
     def __init__(self):
         super(TGController, self).__init__()
-        navbar_append('Sub || Google', url='http://www.google.com/')
+        navbar_append('Sub || Google', url='http://www.google.com/', icon="navfunc.png")
         navbar_append('Sub || Yet Another', url='yan', base=self)
         navbar_append('Sub || Remove Me', url='byebye', base=self)
         navbar_remove('Sub || Remove Me')
@@ -87,8 +87,8 @@ class RootController(TGController):
     arena = InvisibleArena()
     
         
-    @navbar('TestHome')
-    @sidebar('TestHome on the side')
+    @navbar('TestHome', icon="navdeco.png")
+    @sidebar('TestHome on the side', icon='sidedeco.png')
     @expose('genshi:tgext.menu.test.templates.index')
     def index(self, *p, **kw):
         return dict(currpage='TestHome')
