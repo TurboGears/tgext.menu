@@ -138,6 +138,7 @@ The decorators and methods all take a common set of parameters:
 * extras
 * sortorder
 * right
+* icon
 
 menu path is simply a string of entries, separated by ||, indicating
 where this particular entry lives in the menu hierarchy. An example
@@ -170,6 +171,10 @@ sortorder is the value of this menu item's sortorder. See "sortorder" under
 
 right is a shortcut for adding the HTML class "right" to the menu item. This
 is just a boolean value.
+
+icon is a URL pointing to the icon image file you wish to assign to this
+entry. While you would normally do this with CSS, you have the option of doing
+this in your code if you wish.
 
 If you use the @menu decorator or menu_append or menu_remove, you will need to
 specify which menu this particular menu entry belongs to. This will allow you
@@ -218,6 +223,27 @@ get_entry will allow you to retrieve the menu object used to store the
 data about the menu entry. This will allow you to do such things as
 update extra attributes, permissions, and the like. It uses the same
 parameters as url_from_menu.
+
+=== switch_template ===
+
+The default template that is provided, while useful, may not meet all of your
+needs. You may write your own Mako template, load it as a single string, and
+pass that string to this function. It will then be compiled and used for all
+menu templates from that point on.
+
+Note that you must pass in one single string, and that string must be a valid
+Mako template, not the name of a template file. For instance, you can use
+something similar to the way the default template is loaded in your own code.
+It is currently loaded this way:
+
+
+{{{
+from pkg_resources import Requirement, resource_string
+tmpl_string = resource_string(Requirement.parse("tgext.menu"),"tgext/menu/templates/divmenu.mak")
+}}}
+
+After that, you may call {{{switch_template(tmpl_string)}}} to begin using
+your template.
 
 === Render The Menu ===
 
