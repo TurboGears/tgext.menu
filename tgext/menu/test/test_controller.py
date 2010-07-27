@@ -144,6 +144,12 @@ rendered_menu = """
             <li class="last" id="foo_1"><a href="/foo">Foo</a></li>
           </ul>
           </li>
+        <li>ID Duper
+          <ul class="navbar_level1">
+            <li class="first" id="idduper_1"><a href="/iddupe1">Spot 1</a></li>
+            <li class="last" id="idduper_2"><a href="/iddupe2">Spot 2</a></li>
+          </ul>
+          </li>
         <li style="font-color: black"><a href="/sub1/styleme">Style Me</a> Right now!</li>
         <li class="last"><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
@@ -181,6 +187,12 @@ rendered_admin_menu = """
               </li>
             <li id="foo_2"><a href="/bar">Bar</a></li>
             <li class="last" id="foo_1"><a href="/foo">Foo</a></li>
+          </ul>
+          </li>
+        <li>ID Duper
+          <ul class="navbar_level1">
+            <li class="first" id="idduper_1"><a href="/iddupe1">Spot 1</a></li>
+            <li class="last" id="idduper_2"><a href="/iddupe2">Spot 2</a></li>
           </ul>
           </li>
         <li><a href="/logout">Logout</a></li>

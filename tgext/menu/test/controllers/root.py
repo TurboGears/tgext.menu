@@ -113,6 +113,15 @@ class RootController(TGController):
     def logout(self, *p, **kw):
         return dict()
     
+    @navbar('ID Duper || Spot 1', extras={'id': 'idduper_1'})
+    @expose('genshi:tgext.menu.test.templates.index')
+    def iddupe1(self, *p, **kw):
+        return dict()
+    
+    @navbar('ID Duper || Spot 2', extras={'id': 'idduper_2'})
+    @expose('genshi:tgext.menu.test.templates.index')
+    def iddupe2(self, *p, **kw):
+        return dict()
     
     #### The following are required for auth stuff to work
     @expose('tgext.menu.test.templates.login')

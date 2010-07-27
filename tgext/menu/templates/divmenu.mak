@@ -26,7 +26,7 @@
         if len(mlist.children) == 0:
             context.write('%s<li%s%s>%s%s</li>\n' % (tabs, htmlclass, attrstring, href, extratext))
         else:
-            context.write('%s<li%s%s>%s%s\n%s  <ul class="%s_level%s">\n' % (tabs, htmlclass, attrstring, href, extratext, tabs, name, level+1))
+            context.write('%s<li%s>%s%s\n%s  <ul class="%s_level%s">\n' % (tabs, htmlclass, href, extratext, tabs, name, level+1))
             for child in mlist.children:
                 writeList(level+1, child, child==mlist.children[0], child==mlist.children[-1])
             context.write('%s  </ul>\n' % (tabs))
