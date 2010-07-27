@@ -36,7 +36,7 @@ from decorators import menu, navbar, sidebar
 from functions import render_menu, render_navbar, render_sidebar
 from functions import menu_append, navbar_append, sidebar_append
 from functions import menu_remove, navbar_remove, sidebar_remove
-from functions import url_from_menu, get_entry
+from functions import url_from_menu, get_entry, switch_template
 
 __all__ = ["menu", "navbar", "sidebar",
            "menu_append", "navbar_append", "sidebar_append",
@@ -44,7 +44,7 @@ __all__ = ["menu", "navbar", "sidebar",
            "render_menu", "render_navbar", "render_sidebar",
            "register_callback", "register_callback_navbar", "register_callback_sidebar",
            "deregister_callback", "deregister_callback_navbar", "deregister_callback_sidebar",
-           "url_from_menu", "get_entry", "entry"]
+           "url_from_menu", "get_entry", "switch_template", "entry"]
 
 # The below code is a bit of magic to make the usage of tgext.menu easier on
 # the developer. Basically, it grabs the current variable_provider from the

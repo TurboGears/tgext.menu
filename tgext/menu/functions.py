@@ -16,7 +16,7 @@ jquery_bgiframe_js = jquery_dimensions_js = jquery_jdmenu_js = jquery_js = jquer
 use_tw2 = False
 
 ##############################################################################
-## Section: url_from_menu and get_entry
+## Section: url_from_menu, get_entry, switch_template
 ##############################################################################
 def url_from_menu(menuname, menupath):
     menu = shared_cache.getMenu(menuname)
@@ -28,6 +28,10 @@ def url_from_menu(menuname, menupath):
 
 def get_entry(menuname, menupath):
     return shared_cache.getEntry(menuname, menupath)
+
+def switch_template(instr):
+    global divmenu
+    divmenu = Template(instr)
 
 ##############################################################################
 ## Section: Functions to append menu entries onto a menu

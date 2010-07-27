@@ -6,6 +6,7 @@ from tg.util import Bunch
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from pkg_resources import Requirement, resource_string
 
 from tgext.menu.test.model import metadata, DBSession, User, Group, Permission
 from tgext.menu.caches import shared_cache, callbacks
@@ -14,6 +15,7 @@ from tgext.menu.caches import deregister_callback, deregister_callback_navbar, d
 from tgext.menu.test.model import Dictionary
 from tgext.menu import menu_variable_provider, url_from_menu, sidebar_append, sidebar_remove, menu_append, menu_remove
 from tgext.menu.util import init_resources
+from tgext.menu.functions import switch_template
 
         
 root = os.path.abspath(os.path.dirname(__file__))
@@ -332,6 +334,15 @@ class TestMenuDecorator:
         assert len(callbacks['sidebar']) > 0
         deregister_callback_sidebar(self.callmeback)
         assert len(callbacks['sidebar']) == 0
+        
+    def test_switch_template(self):
+        divmenu = resource_string(Requirement.parse("tgext.menu"),"tgext/menu/templates/divmenu.mak")
+        switched = "Blank menu test"
+        switch_template(switched)
+        resp = self.app.get('/')
+        switch_template(divmenu)
+        assert switched in resp.body, resp.body
+    
 
         
     
