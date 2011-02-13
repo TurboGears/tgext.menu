@@ -108,7 +108,7 @@ def render_menu(menuname, vertical=False, active=None):
         else:
             extras = menuitem.extras
         menutree.appendPath(menuitem._mpath, str(menuitem._url), extras, menuitem.icon)
-    return divmenu.render(menulist=menutree, name=menuname, vertical_menu=vertical)
+    return divmenu.render_unicode(menulist=menutree, name=menuname, vertical_menu=vertical)
 
 def render_navbar(vertical=False, active=None):
     return render_menu(u'navbar', vertical, active)

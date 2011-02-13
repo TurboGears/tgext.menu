@@ -115,7 +115,7 @@ def setup():
     setup_records(DBSession)
     DBSession.commit()
 
-rendered_menu = """
+rendered_menu = u"""
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
         <li class="active first"><img src="navdeco.png" /><a href="/index">TestHome</a></li>
@@ -153,12 +153,13 @@ rendered_menu = """
           </ul>
           </li>
         <li style="font-color: black"><a href="/sub1/styleme">Style Me</a> Right now!</li>
+        <li><a href="/unicode">T\xe9l\xe9phones</a></li>
         <li class="last"><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
 </div>
 """
 
-rendered_admin_menu = """
+rendered_admin_menu = u"""
 <div id="navbar_div">
     <ul id="navbar" class="jd_menu">
         <li class="active first"><img src="navdeco.png" /><a href="/index">TestHome</a></li>
@@ -199,6 +200,7 @@ rendered_admin_menu = """
           </li>
         <li><a href="/logout">Logout</a></li>
         <li style="font-color: black"><a href="/sub1/styleme">Style Me</a> Right now!</li>
+        <li><a href="/unicode">T\xe9l\xe9phones</a></li>
         <li class="last"><a href="/sub1/Sub2/bybye">ExitApp</a></li>
     </ul>
 </div>

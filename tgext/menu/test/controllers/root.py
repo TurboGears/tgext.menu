@@ -1,3 +1,4 @@
+# coding=utf-8
 from tg import config, expose, request, require
 from tg.controllers import TGController
 from tgext.menu.test.model import DBSession
@@ -93,6 +94,11 @@ class RootController(TGController):
     def index(self, *p, **kw):
         return dict(currpage='TestHome')
 
+    @navbar(u'T\xe9l\xe9phones')
+    @expose('genshi:tgext.menu.test.templates.index')
+    def unicode(self, *p, **kw):
+        return dict()
+    
     @navbar('Foo Spot || Foo', extras={'id':'foo_1'})
     @expose('genshi:tgext.menu.test.templates.index')
     def foo(self, *p, **kw):
