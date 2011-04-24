@@ -10,15 +10,16 @@ import os
 
 setup(
     name='tgext.menu',
-    version='1.0b4',
+    version='1.0rc1',
     description='Automatic menu/navbar/sidebar generation extension for TurboGears',
     author='Michael Pedersen',
     author_email='m.pedersen@icelus.org',
     url='http://bitbucket.org/pedersen/tgext.menu',
     install_requires=[
-        "TurboGears2 >= 2.1b1",
+        "TurboGears2 >= 2.1",
         'Mako >= 0.2.4',
         ],
+    keywords="turbogears2.widgets",
     setup_requires=["PasteScript >= 1.7"],
     paster_plugins=['PasteScript', 'Pylons', 'TurboGears2', 'tg.devtools'],
     packages=find_packages(exclude=['ez_setup', "*.test", "*.test.*", "test.*", "test"]),
