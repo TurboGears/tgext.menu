@@ -26,7 +26,7 @@ SOFTWARE.
 """
 import sys
 
-from tg.configuration import Bunch
+from tg.util import Bunch
 from pylons import config
 
 from caches import register_callback, register_callback_navbar, register_callback_sidebar
