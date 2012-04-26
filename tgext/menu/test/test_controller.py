@@ -1,10 +1,11 @@
 import os, sys
 import tgext.menu
-from pylons import config
-from tg.test_stack import TestConfig, app_from_config
+from tg import config
+from tg.configuration import AppConfig
 from tg.util import Bunch
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
+from webtest import TestApp
 
 from pkg_resources import Requirement, resource_string
 
@@ -28,46 +29,56 @@ paths=Bunch(
             templates=os.path.join(root, 'templates')
             )
 
-base_config = TestConfig(folder = 'rendering',
-                         values = {'use_sqlalchemy': True,
-                                   'use_toscawidgets2': True,
-                                   'full_stack': True,
-                                   'model':tgext.menu.test.model,
-                                   'session':tgext.menu.test.model.DBSession,
-                                   'pylons.helpers': Bunch(),
-                                   'use_legacy_renderer': False,
-                                   'renderers':['json', 'genshi', 'mako'],
-                                   'default_renderer':'genshi',
-                                   'use_dotted_templatenames': True,
-                                   'paths':paths,
-                                   'package':tgext.menu.test,
-                                   'sqlalchemy.url':test_db_path,
-                                   'variable_provider':menu_variable_provider,
-                                   'auth_backend': 'sqlalchemy',
-                                   'sa_auth': {
-                                       'cookie_secret': 'ChAnGeMe',
-                                       'dbsession': tgext.menu.test.model.DBSession,
-                                       'user_class': User,
-                                       'group_class': Group,
-                                       'permission_class': Permission,
-                                       'post_login_url': '/post_login',
-                                       'post_logout_url': '/post_logout',
-                                       'form_plugin': None,
-                                       },
-                                   
-                                   'beaker.session.secret': 'ChAnGeMe',
-                                   'beaker.session.key': 'tgext.menu.test',
-                                   'tgext_menu': {
-                                        'inject_css': True,
-                                        'sortorder': {
-                                            'TestHome': -1,
-                                            'ExitApp': 99999999,
-                                            'Baz' : 50,
-                                            'Sub' : 50
-                                            }
-                                       }
-                                  }
-                         )
+base_config = AppConfig()
+base_config.update(
+    {'use_sqlalchemy': True,
+     'use_toscawidgets2': True,
+     'full_stack': True,
+     'model':tgext.menu.test.model,
+     'session':tgext.menu.test.model.DBSession,
+     'pylons.helpers': Bunch(),
+     'use_legacy_renderer': False,
+     'renderers':['json', 'genshi', 'mako'],
+     'default_renderer':'genshi',
+     'use_dotted_templatenames': True,
+     'paths':paths,
+     'package':tgext.menu.test,
+     'sqlalchemy.url':test_db_path,
+     'variable_provider':menu_variable_provider,
+     'auth_backend': 'sqlalchemy',
+     'sa_auth': {
+            'cookie_secret': 'ChAnGeMe',
+            'dbsession': tgext.menu.test.model.DBSession,
+            'user_class': User,
+            'group_class': Group,
+            'permission_class': Permission,
+            'post_login_url': '/post_login',
+            'post_logout_url': '/post_logout',
+            'form_plugin': None,
+            },
+     'beaker.session.secret': 'ChAnGeMe',
+     'beaker.session.key': 'tgext.menu.test',
+     'tgext_menu': {
+            'inject_css': True,
+            'sortorder': {
+                'TestHome': -1,
+                'ExitApp': 99999999,
+                'Baz' : 50,
+                'Sub' : 50
+                }
+            }
+     }
+    )
+def app_from_config(base_config, deployment_config=None):
+    if not deployment_config:
+        deployment_config = {'debug': 'true',
+                             'error_email_from': 'paste@localhost',
+                             'smtp_server': 'localhost'}
+
+    env_loader = base_config.make_load_environment()
+    app_maker = base_config.setup_tg_wsgi_app(env_loader)
+    app = TestApp(app_maker(deployment_config, full_stack=True))
+    return app
 
 def setup_records(session):
     session.add(Dictionary(word=u'the'))
@@ -111,7 +122,7 @@ def setup():
     metadata.bind = engine
     metadata.drop_all()
     metadata.create_all()
-    DBSession = sessionmaker(bind=engine)()
+    DBSession = scoped_session(sessionmaker(bind=engine))
     setup_records(DBSession)
     DBSession.commit()
 
@@ -290,7 +301,7 @@ class TestMenuDecorator:
         config['use_toscawidgets2'] = True
         init_resources()
         resp = self.app.get('/')
-        assert 'tw2.jquery/static/jquery/1.4.2/jquery.js' in resp, resp
+        assert 'tw2.jquery/static/jquery/1.7.1/jquery.js' in resp, resp
         assert 'jquery.jdMenu.js' in resp, resp
         config['use_toscawidgets2'] = oldval
 

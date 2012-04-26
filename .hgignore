@@ -8,3 +8,4 @@ PasteScript-*.egg/*
 Paste-*.egg/*
 PasteDeploy-*.egg/*
 .coverage
+nosetests.xml
