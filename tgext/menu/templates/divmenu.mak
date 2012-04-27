@@ -43,7 +43,7 @@
     </ul>
 </div>
 <script type="text/javascript">
-$(function(){
-$("#${name}").jdMenu();
-});
+  $(document).ready(function() {
+      $("#${name}").jdMenu();
+  });
 </script>
