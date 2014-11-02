@@ -1,11 +1,14 @@
 import sys
 from copy import deepcopy
 
-from pylons import config
-from tg import request
+try:
+    from tg import config
+    from tg.predicates import NotAuthorizedError, has_permission
+except ImportError:
+    from pylons import config
+    from repoze.what.predicates import NotAuthorizedError, has_permission
 
-from repoze.what.predicates import NotAuthorizedError
-from repoze.what.predicates import has_permission
+from tg import request
 
 import tgext.menu.functions
 
