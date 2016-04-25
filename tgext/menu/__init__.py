@@ -27,7 +27,10 @@ SOFTWARE.
 import sys
 
 from tg.util import Bunch
-from pylons import config
+try:
+    from tg import config
+except ImportError:
+    from pylons import config
 
 from caches import register_callback, register_callback_navbar, register_callback_sidebar
 from caches import deregister_callback, deregister_callback_navbar, deregister_callback_sidebar

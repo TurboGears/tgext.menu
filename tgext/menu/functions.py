@@ -6,7 +6,10 @@ from mako.template import Template
 from pkg_resources import Requirement, resource_string
 divmenu = Template(resource_string(Requirement.parse("tgext.menu"),"tgext/menu/templates/divmenu.mak"))
 
-from pylons import config
+try:
+    from tg import config
+except ImportError:
+    from pylons import config
 
 from tgext.menu.caches import shared_cache, entry, callbacks
 from tgext.menu.util import init_resources, OutputEntry

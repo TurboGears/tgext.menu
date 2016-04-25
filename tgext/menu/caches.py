@@ -3,7 +3,10 @@ import sys
 from copy import deepcopy
 from inspect import isfunction
 
-from pylons import config
+try:
+    from tg import config
+except ImportError:
+    from pylons import config
 from tg.controllers import TGController
 
 rootcon = None
