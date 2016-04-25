@@ -1,5 +1,6 @@
-syntax:glob
-tgext.menu.egg-info/*
+.coverage
+nosetests.xml
+.idea/*
 *.pyc
 *.wpu
 dist/*
@@ -7,5 +8,4 @@ build/*
 PasteScript-*.egg/*
 Paste-*.egg/*
 PasteDeploy-*.egg/*
-.coverage
-nosetests.xml
+tgext.menu.egg-info/*
